@@ -1,0 +1,33 @@
+---
+import { unconfirmedFields } from '../config/site';
+const fields = unconfirmedFields();
+---
+
+{
+  import.meta.env.DEV && fields.length > 0 && (
+    <details class="dev-banner">
+      <summary>Dev: {fields.length} unconfirmed</summary>
+      <ul>{fields.map((f) => <li>{f}</li>)}</ul>
+    </details>
+  )
+}
+
+<style>
+  .dev-banner {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 200;
+    max-width: 20rem;
+    max-height: 60vh;
+    overflow: auto;
+    padding: 0.25rem 0.5rem;
+    background: #111;
+    color: #fff;
+    font: 12px/1.4 monospace;
+    opacity: 0.85;
+  }
+  .dev-banner summary {
+    cursor: pointer;
+  }
+</style>

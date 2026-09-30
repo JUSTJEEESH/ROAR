@@ -1,0 +1,35 @@
+---
+import { site } from '../../config/site';
+import { alternatePath, stripLocale } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  pathname: string;
+}
+const { title, description, locale, pathname } = Astro.props;
+const abs = (p: string) => new URL(p, site.url).toString();
+const canonical = abs(pathname);
+const twinPath = alternatePath(locale, pathname);
+const enPath = locale === 'en' ? pathname : twinPath;
+const esPath = locale === 'es' ? pathname : twinPath;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="alternate" hreflang="en" href={abs(enPath)} />
+<link rel="alternate" hreflang="es" href={abs(esPath)} />
+<link rel="alternate" hreflang="x-default" href={abs(stripLocale(pathname))} />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale === 'es' ? 'es_HN' : 'en_US'} />
+<!-- TODO(phase 5): og:image and twitter:image once the default OG image exists -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />

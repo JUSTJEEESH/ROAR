@@ -82,6 +82,16 @@ Format: question → config field → status.
 | H3 | Analytics: do you want privacy-friendly analytics (Plausible)? | Open |
 | H4 | Privacy policy and terms: does ROAR have existing text, or should we draft plain-language versions for review? | Open |
 
+## I. Added during build (Phase 1)
+
+| # | Item | Status |
+|---|---|---|
+| I1 | The hero/Founding 250 copy says "250 people. One year." Is the one-year framing still accurate (it matches the 12-month term)? | Open |
+| I2 | Confirm the parent-organization line in the footer: "ROAR Mobile is a program of Roatan Operation Animal Rescue." (`TODO(copy)` in `en.ts`/`es.ts`) | Open |
+| I3 | Benefit wording: brief says "Founding Member card" and "Monthly progress updates"; the current site says "membership card" and "newsletter/updates". Which does the CEO want? | Open |
+| I4 | Is a text wordmark acceptable in the header until real logo files arrive? (F1) | Open |
+| I5 | Josh: the live roarmobile.org is blocked from this build environment (HTTP 403). The old-slug redirect list and existing FAQ/Strategy copy need to be pulled by Josh or from another environment. | Open |
+
 ---
 
 ## Resolved

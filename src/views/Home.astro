@@ -1,0 +1,89 @@
+---
+import Button from '../components/ui/Button.astro';
+import Base from '../layouts/Base.astro';
+import { localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const hero = c.home.hero;
+---
+
+<Base title={c.meta.homeTitle} description={c.meta.homeDescription} locale={locale}>
+  <!-- Phase 1 shell: hero only. Remaining sections land in Phase 2. -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">{hero.eyebrow}</p>
+        <h1 id="hero-title">{hero.title}</h1>
+        <p class="hero__sub">{hero.subtitle}</p>
+        <p class="hero__body">{hero.body}</p>
+        <div class="hero__actions">
+          <div data-hides-sticky class="hero__primary">
+            <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+              {c.cta.founding}
+            </Button>
+          </div>
+          <Button href="#how-it-works" variant="secondary" block>{c.cta.seeHowItWorks}</Button>
+        </div>
+      </div>
+      <div class="photo-placeholder hero__photo" role="img" aria-label={hero.photoLabel}>
+        {hero.photoLabel}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: var(--space-8) var(--space-12);
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  h1 {
+    font-size: var(--text-hero);
+    color: var(--color-primary);
+  }
+  .hero__sub {
+    font-size: var(--text-lg);
+    font-weight: 700;
+  }
+  .hero__body {
+    color: var(--color-muted);
+    max-width: var(--measure);
+  }
+  .hero__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .hero__photo {
+    aspect-ratio: 4 / 3;
+  }
+  @media (min-width: 48em) {
+    .hero__actions {
+      flex-direction: row;
+    }
+  }
+  @media (min-width: 64em) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      align-items: center;
+    }
+    .hero__photo {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

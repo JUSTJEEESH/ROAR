@@ -1,0 +1,40 @@
+---
+import { alternatePath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+const { locale, pathname } = Astro.props;
+const other: Locale = locale === 'en' ? 'es' : 'en';
+// Links to the equivalent page, not the homepage
+const href = alternatePath(locale, pathname);
+---
+
+<a
+  href={href}
+  hreflang={other}
+  lang={other}
+  class="lang-switch"
+  aria-label={t(locale).a11y.switchTo}
+  data-analytics="language_switch"
+>
+  {other === 'es' ? 'Español' : 'English'}
+</a>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch);
+    padding-inline: 0.5rem;
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+  }
+  .lang-switch:hover {
+    border-bottom-color: currentColor;
+  }
+</style>

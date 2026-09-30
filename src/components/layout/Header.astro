@@ -1,0 +1,213 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+import LangSwitch from './LangSwitch.astro';
+import Logo from './Logo.astro';
+import MobileMenu from './MobileMenu.astro';
+import { navItems } from './navItems';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+const { locale, pathname } = Astro.props;
+const c = t(locale);
+const items = navItems(locale);
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <Logo locale={locale} />
+
+    <nav class="site-header__nav" aria-label={c.a11y.mainNav}>
+      <ul role="list">
+        {items.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="site-header__donate" href={localizedPath(locale, '/donate')} data-analytics="donation_cta_click">
+        {c.cta.donate}
+      </a>
+      <span class="site-header__lang"><LangSwitch locale={locale} pathname={pathname} /></span>
+      <Button href={localizedPath(locale, '/become-a-member')} class="site-header__cta" data-analytics="membership_cta_click">
+        <span class="site-header__cta-long">{c.cta.founding}</span>
+        <span class="site-header__cta-short">{c.cta.foundingShort}</span>
+      </Button>
+      <button
+        type="button"
+        class="site-header__menu-btn"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-open
+      >
+        <span class="visually-hidden">{c.a11y.openMenu}</span>
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+          <path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" fill="none"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<MobileMenu locale={locale} pathname={pathname} />
+
+<!-- Without JS the overlay can't open, so show the nav inline instead. -->
+<noscript>
+  <style is:inline>
+    .site-header__inner { flex-wrap: wrap; }
+    .site-header__menu-btn { display: none !important; }
+    .site-header__nav { display: block !important; order: 3; width: 100%; }
+    .site-header__nav ul { display: flex; flex-wrap: wrap; column-gap: 1rem; }
+    .site-header__nav a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 700; }
+  </style>
+</noscript>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const menu = document.getElementById('mobile-menu');
+
+  if (btn && menu) {
+    const focusable = () =>
+      Array.from(
+        menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+
+    const open = () => {
+      menu.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden';
+      focusable()[0]?.focus();
+    };
+
+    const close = (returnFocus = true) => {
+      menu.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+      if (returnFocus) btn.focus();
+    };
+
+    btn.addEventListener('click', open);
+    menu.querySelector('[data-menu-close]')?.addEventListener('click', () => close());
+    // In-page anchors (e.g. /#why-roar) don't reload, so close the overlay.
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => close(false)));
+
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const els = focusable();
+      if (!els.length) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // If the viewport grows past the menu breakpoint, don't leave it open.
+    window.matchMedia('(min-width: 64em)').addEventListener('change', (e) => {
+      if (e.matches && !menu.hidden) close(false);
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    min-height: var(--header-h);
+  }
+  .site-header__nav,
+  .site-header__donate,
+  .site-header__lang {
+    display: none;
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  /* 320px: compact CTA label so logo + CTA + menu fit */
+  .site-header__cta {
+    min-height: var(--touch);
+    padding: 0.5rem 0.75rem;
+    font-size: var(--text-sm);
+  }
+  .site-header__cta-long {
+    display: none;
+  }
+
+  .site-header__menu-btn {
+    display: grid;
+    place-items: center;
+    width: var(--touch);
+    height: var(--touch);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  @media (min-width: 64em) {
+    .site-header__inner {
+      gap: var(--space-6);
+    }
+    .site-header__nav {
+      display: block;
+      margin-inline: auto;
+    }
+    .site-header__nav ul {
+      display: flex;
+      gap: var(--space-6);
+    }
+    .site-header__nav a,
+    .site-header__donate {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--touch);
+      font-weight: 700;
+      font-size: var(--text-sm);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+    .site-header__nav a:hover,
+    .site-header__donate:hover {
+      border-bottom-color: currentColor;
+    }
+    .site-header__donate,
+    .site-header__lang {
+      display: inline-flex;
+    }
+    .site-header__actions {
+      gap: var(--space-4);
+    }
+    .site-header__cta {
+      padding: 0.75rem 1.25rem;
+      font-size: var(--text-sm);
+    }
+    .site-header__cta-long {
+      display: inline;
+    }
+    .site-header__cta-short,
+    .site-header__menu-btn {
+      display: none;
+    }
+  }
+</style>

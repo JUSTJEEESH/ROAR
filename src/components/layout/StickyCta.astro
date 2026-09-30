@@ -1,0 +1,60 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<!-- Mobile-only bar. Elements marked [data-hides-sticky] hide it while in view.
+     Without JS it stays visible. -->
+<div class="sticky-cta" data-sticky-cta>
+  <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+    {t(locale).cta.founding}
+  </Button>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const watched = document.querySelectorAll('[data-hides-sticky]');
+
+  if (bar && watched.length && 'IntersectionObserver' in window) {
+    const inView = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) inView.add(e.target);
+        else inView.delete(e.target);
+      }
+      bar.classList.toggle('is-hidden', inView.size > 0);
+    });
+    watched.forEach((el) => io.observe(el));
+  }
+</script>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 40;
+    padding: var(--space-3) max(var(--gutter), env(safe-area-inset-left))
+      calc(var(--space-3) + env(safe-area-inset-bottom));
+    background: var(--color-background);
+    border-top: 1px solid var(--color-line);
+    transition:
+      transform var(--duration) var(--ease),
+      visibility var(--duration);
+  }
+  .sticky-cta.is-hidden {
+    transform: translateY(100%);
+    visibility: hidden;
+  }
+  @media (min-width: 48em) {
+    .sticky-cta {
+      display: none;
+    }
+  }
+</style>
