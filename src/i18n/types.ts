@@ -9,6 +9,8 @@ export interface Copy {
     siteName: string;
     homeTitle: string;
     homeDescription: string;
+    /** Social share image text, brief §32 */
+    og: { title: string; tagline: string };
   };
   a11y: {
     skipToContent: string;

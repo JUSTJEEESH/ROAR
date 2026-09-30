@@ -108,6 +108,16 @@ Format: question → config field → status.
 | J6 | Contact form shows "not connected yet" until `contact.formspreeId` is set (F6). Donate/membership buttons show a disabled state plus "Online sign-up isn't available yet" until the Zeffy links are set (B4, C1). The "Sponsor the build" option only appears once `links.equipmentRegistry` is set (C2). | Open |
 | J7 | Privacy and Terms are plain-language drafts flagged `TODO(legal)`. They mention Formspree, Zeffy and (optionally) privacy-focused analytics. Needs CEO or counsel review (H4). | Open |
 
+## K. Added during build (Phase 5)
+
+| # | Item | Status |
+|---|---|---|
+| K1 | The default social image (`/og/en.png`, `/og/es.png`) is text on ocean blue, generated at build time from brief §32. When the real logo arrives, add it to the image (and to the NGO structured data as `logo`). | Open (needs F1) |
+| K2 | Structured data says `NGO`, parent organization "Roatan Operation Animal Rescue", Roatán, HN. Nonprofit-status properties (501(c)(3)) are omitted until exact wording is supplied (D5, D6). | Open |
+| K3 | `sameAs` (Facebook, Instagram) is added automatically once `links.facebook` / `links.instagram` are set (F5). | Open |
+| K4 | Per-page share images are not generated (optional in the plan). Every page uses the default image. Want custom images for the membership and donate pages? | Open |
+| K5 | URL convention decided: no trailing slash (`/the-strategy`), English root `/`, Spanish root `/es`. Hosts serve these directly with no redirect. Cloudflare Pages and Netlify both handle this. If the CEO's host differs, tell Josh. | Decided |
+
 ---
 
 ## Resolved

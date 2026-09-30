@@ -11,8 +11,9 @@ export const es: Copy = {
     siteName: 'ROAR Mobile',
     homeTitle: 'ROAR Mobile | Un nuevo enfoque para el bienestar animal en Roatán',
     // TODO(copy): Josh to review meta description
+    og: { title: 'Un nuevo enfoque para la crisis animal de\u00a0Roatán.', tagline: 'Una comunidad a la vez.' },
     homeDescription:
-      'ROAR Mobile es un programa veterinario móvil diseñado para llevar esterilización de alto volumen y atención animal preventiva directamente a las comunidades de Roatán.',
+      'ROAR Mobile es un programa veterinario móvil que lleva esterilización de alto volumen y atención preventiva directamente a las comunidades de Roatán.',
   },
   a11y: {
     skipToContent: 'Saltar al contenido principal',

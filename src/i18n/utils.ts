@@ -17,7 +17,7 @@ export function t(locale: Locale): Copy {
 export function localizedPath(locale: Locale, path = '/'): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   if (locale === site.defaultLocale) return clean;
-  return clean === '/' ? '/es/' : `/es${clean}`;
+  return clean === '/' ? '/es' : `/es${clean}`;
 }
 
 /** Strips the locale prefix so a page can be mapped to its twin. */
@@ -33,4 +33,16 @@ export function alternatePath(locale: Locale, pathname: string): string {
 /** Replaces {name} tokens. Numbers always come from site.ts, never from copy. */
 export function fmt(template: string, vars: Record<string, string | number>): string {
   return template.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? String(vars[k]) : `{${k}}`));
+}
+
+/**
+ * Canonical form of a path: no trailing slash, except the English root `/`.
+ * The Spanish root is `/es`. Matches what Cloudflare Pages and Netlify serve for
+ * `build.format: 'file'` output (foo.html at /foo, es.html at /es).
+ */
+export function canonicalPath(pathname: string): string {
+  // With build.format 'file', Astro reports paths like /faq.html and /index.html.
+  const clean = pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+  if (clean === '' || clean === '/') return '/';
+  return clean.replace(/\/+$/, '');
 }

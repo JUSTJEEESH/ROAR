@@ -38,7 +38,9 @@ Status: **not yet reviewed by a native speaker** (`reviewed: false`, OPEN_QUESTI
 |---|---|---|---|
 | `siteName` | ROAR Mobile | ROAR Mobile | |
 | `homeTitle` | ROAR Mobile \| A New Approach to Animal Welfare in Roatán | ROAR Mobile \| Un nuevo enfoque para el bienestar animal en Roatán | |
-| `homeDescription` | ROAR Mobile is a purpose-built mobile veterinary program bringing high-volume sterilization and preventive animal care directly into communities across Roatán. | ROAR Mobile es un programa veterinario móvil diseñado para llevar esterilización de alto volumen y atención animal preventiva directamente a las comunidades de Roatán. | |
+| `og.title` | A new approach to Roatán’s animal crisis. | Un nuevo enfoque para la crisis animal de Roatán. | |
+| `og.tagline` | One community at a time. | Una comunidad a la vez. | |
+| `homeDescription` | ROAR Mobile is a purpose-built mobile veterinary program bringing high-volume sterilization and preventive animal care directly into communities across Roatán. | ROAR Mobile es un programa veterinario móvil que lleva esterilización de alto volumen y atención preventiva directamente a las comunidades de Roatán. | |
 
 ## a11y
 
@@ -109,11 +111,11 @@ Status: **not yet reviewed by a native speaker** (`reviewed: false`, OPEN_QUESTI
 | Key | English | Spanish | Fix |
 |---|---|---|---|
 | `strategy.title` | The ROAR Mobile Strategy \| Community-Based Animal Welfare in Roatán | La Estrategia de ROAR Mobile \| Bienestar animal comunitario en Roatán | |
-| `strategy.description` | ROAR Mobile works one sector at a time: map, sterilize, track, and return. See how the strategy is designed to reduce animal population growth in Roatán. | ROAR Mobile trabaja un sector a la vez: mapear, esterilizar, registrar y regresar. Conoce cómo la estrategia busca reducir el crecimiento de la población animal en Roatán. | |
+| `strategy.description` | ROAR Mobile works one sector at a time: map, sterilize, track, and return. See how the strategy is designed to reduce animal population growth in Roatán. | ROAR Mobile trabaja un sector a la vez: mapear, esterilizar, registrar y regresar. Conoce cómo busca reducir la población animal en Roatán. | |
 | `unit.title` | ROAR Mobile Veterinary Unit \| Bringing Care to Roatán Communities | Unidad Veterinaria ROAR Mobile \| Atención para las comunidades de Roatán | |
-| `unit.description` | A self-contained mobile surgical unit designed for Roatán’s roads, heat, and communities. See how the ROAR Mobile veterinary unit is being built. | Una unidad quirúrgica móvil autónoma, diseñada para los caminos, el calor y las comunidades de Roatán. Conoce cómo se está construyendo la unidad veterinaria de ROAR Mobile. | |
+| `unit.description` | A self-contained mobile surgical unit designed for Roatán’s roads, heat, and communities. See how the ROAR Mobile veterinary unit is being built. | Una unidad quirúrgica móvil autónoma, diseñada para los caminos, el calor y las comunidades de Roatán. Conoce cómo se construye. | |
 | `member.title` | Join the Founding {goal} \| ROAR Mobile | Únete a los {goal} Fundadores \| ROAR Mobile | |
-| `member.description` | Become a Founding Member of ROAR Mobile and help fund a mobile veterinary unit for Roatán. See the membership options, benefits, and answers to common questions. | Hazte Miembro Fundador de ROAR Mobile y ayuda a financiar una unidad veterinaria móvil para Roatán. Conoce las opciones de membresía, los beneficios y las respuestas a preguntas frecuentes. | |
+| `member.description` | Become a Founding Member of ROAR Mobile and help fund a mobile veterinary unit for Roatán. See the options, benefits, and common questions. | Hazte Miembro Fundador de ROAR Mobile y ayuda a financiar una unidad veterinaria móvil para Roatán. Conoce las opciones y los beneficios. | |
 | `donate.title` | Donate to ROAR Mobile \| Help Build Roatán’s Mobile Veterinary Unit | Dona a ROAR Mobile \| Ayuda a construir la unidad veterinaria móvil de Roatán | |
 | `donate.description` | Help build ROAR Mobile. Become a Founding Member, make a one-time gift, or sponsor the build. | Ayuda a construir ROAR Mobile. Hazte Miembro Fundador, haz una donación única o patrocina la construcción. | |
 | `faq.title` | FAQ \| ROAR Mobile | Preguntas frecuentes \| ROAR Mobile | |

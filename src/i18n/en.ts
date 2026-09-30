@@ -7,6 +7,7 @@ export const en: Copy = {
     siteName: 'ROAR Mobile',
     homeTitle: 'ROAR Mobile | A New Approach to Animal Welfare in Roatán',
     // TODO(copy): Josh to review meta description
+    og: { title: 'A new approach to Roatán’s animal crisis.', tagline: 'One community at a time.' },
     homeDescription:
       'ROAR Mobile is a purpose-built mobile veterinary program bringing high-volume sterilization and preventive animal care directly into communities across Roatán.',
   },

@@ -8,16 +8,19 @@ import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import StickyCta from '../components/layout/StickyCta.astro';
 import Seo from '../components/seo/Seo.astro';
-import { t } from '../i18n/utils';
+import { canonicalPath, t } from '../i18n/utils';
 import type { Locale } from '../i18n/types';
 
 interface Props {
   title: string;
   description: string;
   locale: Locale;
+  noindex?: boolean;
+  /** Path the language switch should map from. Defaults to the current page. */
+  langPath?: string;
 }
-const { title, description, locale } = Astro.props;
-const pathname = Astro.url.pathname;
+const { title, description, locale, noindex, langPath } = Astro.props;
+const pathname = canonicalPath(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -27,13 +30,13 @@ const pathname = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0b3b5c" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <Seo title={title} description={description} locale={locale} pathname={pathname} />
+    <Seo title={title} description={description} locale={locale} pathname={pathname} noindex={noindex} />
     <slot name="head" />
     <Analytics />
   </head>
   <body>
     <a class="skip-link" href="#main">{t(locale).a11y.skipToContent}</a>
-    <Header locale={locale} pathname={pathname} />
+    <Header locale={locale} pathname={langPath ?? pathname} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

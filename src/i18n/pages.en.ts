@@ -21,7 +21,7 @@ export const pagesEn: Pages = {
     member: {
       title: 'Join the Founding {goal} | ROAR Mobile',
       description:
-        'Become a Founding Member of ROAR Mobile and help fund a mobile veterinary unit for Roatán. See the membership options, benefits, and answers to common questions.',
+        'Become a Founding Member of ROAR Mobile and help fund a mobile veterinary unit for Roatán. See the options, benefits, and common questions.',
     },
     donate: {
       title: 'Donate to ROAR Mobile | Help Build Roatán’s Mobile Veterinary Unit',

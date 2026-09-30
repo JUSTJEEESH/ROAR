@@ -9,17 +9,17 @@ export const pagesEs: Pages = {
     strategy: {
       title: 'La Estrategia de ROAR Mobile | Bienestar animal comunitario en Roatán',
       description:
-        'ROAR Mobile trabaja un sector a la vez: mapear, esterilizar, registrar y regresar. Conoce cómo la estrategia busca reducir el crecimiento de la población animal en Roatán.',
+        'ROAR Mobile trabaja un sector a la vez: mapear, esterilizar, registrar y regresar. Conoce cómo busca reducir la población animal en Roatán.',
     },
     unit: {
       title: 'Unidad Veterinaria ROAR Mobile | Atención para las comunidades de Roatán',
       description:
-        'Una unidad quirúrgica móvil autónoma, diseñada para los caminos, el calor y las comunidades de Roatán. Conoce cómo se está construyendo la unidad veterinaria de ROAR Mobile.',
+        'Una unidad quirúrgica móvil autónoma, diseñada para los caminos, el calor y las comunidades de Roatán. Conoce cómo se construye.',
     },
     member: {
       title: 'Únete a los {goal} Fundadores | ROAR Mobile',
       description:
-        'Hazte Miembro Fundador de ROAR Mobile y ayuda a financiar una unidad veterinaria móvil para Roatán. Conoce las opciones de membresía, los beneficios y las respuestas a preguntas frecuentes.',
+        'Hazte Miembro Fundador de ROAR Mobile y ayuda a financiar una unidad veterinaria móvil para Roatán. Conoce las opciones y los beneficios.',
     },
     donate: {
       title: 'Dona a ROAR Mobile | Ayuda a construir la unidad veterinaria móvil de Roatán',

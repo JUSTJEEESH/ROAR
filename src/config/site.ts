@@ -82,6 +82,9 @@ export const site = {
   contact: {
     email: 'info@roarmobile.org',
     location: 'Roatán, Honduras',
+    /** Used for structured data only */
+    addressLocality: 'Roatán',
+    countryCode: 'HN',
     /** Formspree form ID, e.g. 'xyzabcde'. Empty = form renders but posts nowhere; flag in dev banner. */
     formspreeId: '',
   },

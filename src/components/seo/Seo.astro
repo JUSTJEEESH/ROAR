@@ -1,6 +1,6 @@
 ---
 import { site } from '../../config/site';
-import { alternatePath, stripLocale } from '../../i18n/utils';
+import { alternatePath, canonicalPath, t } from '../../i18n/utils';
 import type { Locale } from '../../i18n/types';
 
 interface Props {
@@ -8,28 +8,45 @@ interface Props {
   description: string;
   locale: Locale;
   pathname: string;
+  noindex?: boolean;
 }
-const { title, description, locale, pathname } = Astro.props;
+const { title, description, locale, pathname, noindex = false } = Astro.props;
 const abs = (p: string) => new URL(p, site.url).toString();
-const canonical = abs(pathname);
-const twinPath = alternatePath(locale, pathname);
-const enPath = locale === 'en' ? pathname : twinPath;
-const esPath = locale === 'es' ? pathname : twinPath;
+const here = canonicalPath(pathname);
+const twin = canonicalPath(alternatePath(locale, pathname));
+const enPath = locale === 'en' ? here : twin;
+const esPath = locale === 'es' ? here : twin;
+const image = abs(`/og/${locale}.png`);
+const imageAlt = `${t(locale).meta.og.title} ${t(locale).meta.og.tagline}`;
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-<link rel="alternate" hreflang="en" href={abs(enPath)} />
-<link rel="alternate" hreflang="es" href={abs(esPath)} />
-<link rel="alternate" hreflang="x-default" href={abs(stripLocale(pathname))} />
+{noindex && <meta name="robots" content="noindex" />}
+{
+  !noindex && (
+    <>
+      <link rel="canonical" href={abs(here)} />
+      <link rel="alternate" hreflang="en" href={abs(enPath)} />
+      <link rel="alternate" hreflang="es" href={abs(esPath)} />
+      <link rel="alternate" hreflang="x-default" href={abs(enPath)} />
+    </>
+  )
+}
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:url" content={canonical} />
+<meta property="og:url" content={abs(here)} />
 <meta property="og:locale" content={locale === 'es' ? 'es_HN' : 'en_US'} />
-<!-- TODO(phase 5): og:image and twitter:image once the default OG image exists -->
+<meta property="og:locale:alternate" content={locale === 'es' ? 'en_US' : 'es_HN'} />
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
