@@ -13,6 +13,9 @@
   --color-line: #d9cfbd;
   --color-on-primary: #fffaf1;
   --color-placeholder: #cfc6b4;
+  --color-on-primary-muted: #d3dde2;
+  --color-accent-on-dark: #ff9d6e; /* accent tint that passes AA on --color-primary */
+  --color-alt: #ece2d0; /* alternate sand band */
 
   /* Type: fluid, mobile first */
   --font-sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;

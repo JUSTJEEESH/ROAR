@@ -1,0 +1,55 @@
+---
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const d = t(locale).home.different;
+---
+
+<section id="different" class="section" aria-labelledby="different-title">
+  <div class="container different">
+    <h2 id="different-title" class="section-title">{d.title}</h2>
+    <p class="lede">{d.body}</p>
+    <ul role="list" class="cols cols--3">
+      {d.cols.map((col, i) => (
+        <li class:list={{ 'is-key': i === 2 }}>
+          <h3>{col.title}</h3>
+          <p>{col.text}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="different__note">{d.note}</p>
+  </div>
+</section>
+
+<style>
+  .different {
+    display: grid;
+    gap: var(--space-8);
+  }
+  /* The preventive column is the one ROAR Mobile adds; the others are shown without judgement. */
+  .is-key {
+    border-top-color: var(--color-accent);
+  }
+  .is-key h3 {
+    color: var(--color-accent);
+  }
+  .different__note {
+    max-width: 30ch;
+    padding-inline-start: var(--space-4);
+    border-inline-start: 6px solid var(--color-accent);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+  }
+  @media (min-width: 64em) {
+    .different__note {
+      max-width: 36ch;
+    }
+  }
+</style>

@@ -91,6 +91,10 @@ Format: question → config field → status.
 | I3 | Benefit wording: brief says "Founding Member card" and "Monthly progress updates"; the current site says "membership card" and "newsletter/updates". Which does the CEO want? | Open |
 | I4 | Is a text wordmark acceptable in the header until real logo files arrive? (F1) | Open |
 | I5 | Josh: the live roarmobile.org is blocked from this build environment (HTTP 403). The old-slug redirect list and existing FAQ/Strategy copy need to be pulled by Josh or from another environment. | Open |
+| I6 | Homepage donate CTAs link to the on-site `/donate` page (built in Phase 3), which will hold the Zeffy link. OK, or should they go straight to Zeffy (`links.donation`)? | Open |
+| I7 | The Idea section uses a stylized, non-survey-accurate outline of Roatán with five illustrative sectors, labeled "not to scale". Is that acceptable, or does ROAR have a real sector map to use? | Open |
+| I8 | Photos needed for Phase 2 placeholders: hero photo (real animal or community), and a mobile unit rendering or build photo. | Open |
+| I9 | Partners: until at least one partner has approved (D2), the section shows a "will be listed here" line. Preferred wording, or hide the section entirely until then? | Open |
 
 ---
 

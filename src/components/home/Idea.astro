@@ -1,0 +1,72 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+import RoatanMap from './RoatanMap.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const i = c.home.idea;
+---
+
+<section class="section on-dark" aria-labelledby="idea-title">
+  <div class="container idea">
+    <h2 id="idea-title" class="section-title idea__title">
+      <span>{i.titleA}</span>
+      <span class="idea__b">{i.titleB}</span>
+    </h2>
+    <div class="idea__copy stack">
+      <p>{i.lead}</p>
+      <p class="idea__motto">{i.motto}</p>
+      <p>{i.body}</p>
+      <div>
+        <Button href={localizedPath(locale, '/the-strategy')} variant="secondary" onDark block>
+          {c.cta.exploreStrategy}
+        </Button>
+      </div>
+    </div>
+    <div class="idea__map"><RoatanMap locale={locale} /></div>
+  </div>
+</section>
+
+<style>
+  .idea {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .idea__title {
+    max-width: 20ch;
+  }
+  .idea__title span {
+    display: block;
+  }
+  .idea__b {
+    color: var(--color-accent-on-dark);
+  }
+  .idea__copy {
+    max-width: var(--measure);
+  }
+  .idea__motto {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  @media (min-width: 64em) {
+    .idea {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: var(--space-12);
+    }
+    .idea__title {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+    .idea__map {
+      align-self: center;
+    }
+  }
+</style>

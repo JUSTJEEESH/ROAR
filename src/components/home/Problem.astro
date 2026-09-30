@@ -1,0 +1,44 @@
+---
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const p = c.home.problem;
+---
+
+<section id="why-roar" class="section" aria-labelledby="problem-title">
+  <div class="container problem">
+    <h2 id="problem-title" class="section-title">{p.title}</h2>
+    <div class="problem__intro stack">
+      <p class="lede">{p.intro[0]}</p>
+      <p>{p.intro[1]}</p>
+      <p><strong>{p.intro[2]}</strong></p>
+    </div>
+    <ul role="list" class="cols cols--3 problem__points">
+      {p.points.map((pt) => (
+        <li>
+          <h3>{pt.title}</h3>
+          <p>{pt.text}</p>
+        </li>
+      ))}
+    </ul>
+    <div>
+      <Button href="#different" variant="secondary" block>{c.cta.whyDifferent}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .problem__intro {
+    max-width: var(--measure);
+  }
+</style>

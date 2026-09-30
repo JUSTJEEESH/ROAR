@@ -1,0 +1,193 @@
+---
+import { site } from '../../config/site';
+import { fmt, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale).home.transparency;
+const money = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: site.foundingMembers.currency,
+  maximumFractionDigits: 0,
+});
+const camp = site.campaign;
+
+// Render only values the CEO has confirmed. Anything null is skipped.
+const fundingRows: { label: string; value: string }[] = [];
+if (camp.launchGoal !== null) fundingRows.push({ label: tr.funding.launchGoal, value: money.format(camp.launchGoal) });
+if (camp.totalProjectCost !== null) {
+  const range =
+    camp.totalProjectCostMax !== null
+      ? `${money.format(camp.totalProjectCost)} – ${money.format(camp.totalProjectCostMax)}`
+      : money.format(camp.totalProjectCost);
+  fundingRows.push({ label: tr.funding.totalCost, value: range });
+}
+if (camp.raisedToDate !== null) fundingRows.push({ label: tr.funding.raised, value: money.format(camp.raisedToDate) });
+
+const milestones = site.milestones;
+
+const im = site.impact;
+const impactRows = (
+  [
+    [tr.impact.animalsReached, im.animalsReached],
+    [tr.impact.sterilizations, im.sterilizations],
+    [tr.impact.sectorsCovered, im.sectorsCovered],
+  ] as [string, number | null][]
+).filter((r): r is [string, number] => r[1] !== null);
+const numbers = new Intl.NumberFormat('en-US');
+---
+
+<section class="section" aria-labelledby="transparency-title">
+  <div class="container transparency">
+    <div class="transparency__head">
+      <h2 id="transparency-title" class="section-title">{tr.title}</h2>
+      <div class="stack">
+        <p class="lede">{tr.body[0]}</p>
+        <p>{tr.body[1]}</p>
+      </div>
+    </div>
+
+    <div class="cols cols--3 transparency__cols">
+      <div class="col">
+        <h3>{tr.funding.title}</h3>
+        <p class="col__text">{tr.funding.text}</p>
+        {
+          fundingRows.length > 0 ? (
+            <dl class="metrics">
+              {fundingRows.map((r) => (
+                <div>
+                  <dt>{r.label}</dt>
+                  <dd>{r.value}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : (
+            <p class="pending">{tr.funding.unconfirmed}</p>
+          )
+        }
+        {camp.fundsRestrictedToBuild === true && <p class="restricted">{tr.funding.restricted}</p>}
+      </div>
+
+      <div class="col">
+        <h3>{tr.progress.title}</h3>
+        <p class="col__text">{tr.progress.text}</p>
+        {
+          milestones.length > 0 ? (
+            <ul role="list" class="milestones">
+              {milestones.map((m) => (
+                <li>
+                  <span class={`status status--${m.status}`}>{tr.progress.status[m.status]}</span>
+                  <span>{m.label[locale]}{m.date ? ` · ${m.date}` : ''}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="pending">{tr.progress.unconfirmed}</p>
+          )
+        }
+      </div>
+
+      <div class="col">
+        <h3>{tr.impact.title}</h3>
+        <p class="col__text">{tr.impact.text}</p>
+        {
+          impactRows.length > 0 ? (
+            <>
+              <dl class="metrics">
+                {impactRows.map(([label, value]) => (
+                  <div>
+                    <dt>{label}</dt>
+                    <dd>{numbers.format(value)}</dd>
+                  </div>
+                ))}
+              </dl>
+              {im.asOf && <p class="restricted">{fmt(tr.impact.asOf, { date: im.asOf })}</p>}
+            </>
+          ) : (
+            <p class="pending">{tr.impact.unconfirmed}</p>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .transparency {
+    display: grid;
+    gap: var(--space-12);
+  }
+  .transparency__head {
+    display: grid;
+    gap: var(--space-6);
+  }
+  /* .cols li rules apply to <li>; these are divs, so restate the rule here */
+  .col {
+    border-top: 3px solid var(--color-primary);
+    padding-top: var(--space-4);
+  }
+  .col h3 {
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-2);
+  }
+  .col__text {
+    color: var(--color-muted);
+  }
+  .pending {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    border: 2px dashed var(--color-line);
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+  .metrics {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+  }
+  .metrics dt {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-muted);
+  }
+  .metrics dd {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--color-primary);
+  }
+  .restricted {
+    margin-top: var(--space-4);
+    font-weight: 700;
+  }
+  .milestones {
+    margin-top: var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .milestones li {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .status {
+    font-size: var(--text-sm);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .status--done {
+    color: var(--color-secondary);
+  }
+  .status--in_progress {
+    color: var(--color-accent);
+  }
+  .status--planned {
+    color: var(--color-muted);
+  }
+</style>

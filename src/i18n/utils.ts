@@ -29,3 +29,8 @@ export function stripLocale(pathname: string): string {
 export function alternatePath(locale: Locale, pathname: string): string {
   return localizedPath(locale === 'en' ? 'es' : 'en', stripLocale(pathname));
 }
+
+/** Replaces {name} tokens. Numbers always come from site.ts, never from copy. */
+export function fmt(template: string, vars: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (_, k) => (k in vars ? String(vars[k]) : `{${k}}`));
+}

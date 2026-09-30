@@ -1,0 +1,109 @@
+---
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const h = t(locale).home.how;
+---
+
+<section id="how-it-works" class="section" aria-labelledby="how-title">
+  <div class="container how">
+    <h2 id="how-title" class="section-title">{h.title}</h2>
+    <ol role="list" class="steps">
+      {h.steps.map((s, i) => (
+        <li class="step">
+          <span class="step__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how {
+    display: grid;
+    gap: var(--space-8);
+  }
+  /* Mobile: vertical timeline. The numbers carry the order, so it reads with animation off. */
+  .steps {
+    display: grid;
+    gap: 0;
+    counter-reset: none;
+  }
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+    align-content: start;
+    padding-bottom: var(--space-8);
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    inset-block: 3rem 0;
+    inset-inline-start: 1.7rem;
+    width: 3px;
+    background: var(--color-line);
+  }
+  .step:last-child {
+    padding-bottom: 0;
+  }
+  .step:last-child::before {
+    display: none;
+  }
+  .step__n {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: var(--text-lg);
+    font-weight: 800;
+  }
+  .step h3 {
+    font-size: var(--text-xl);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-2);
+  }
+  .step p {
+    max-width: 40ch;
+  }
+  .step > div {
+    padding-top: 0.4rem;
+  }
+
+  /* Desktop: horizontal row */
+  @media (min-width: 64em) {
+    .steps {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .step {
+      grid-template-columns: minmax(0, 1fr);
+      padding-bottom: 0;
+      gap: var(--space-4);
+    }
+    .step h3 {
+      font-size: var(--text-lg);
+    }
+    .step::before {
+      inset-block: 1.6rem auto;
+      inset-inline: 3.5rem calc(var(--space-6) * -1);
+      width: auto;
+      height: 3px;
+    }
+    .step > div {
+      padding-top: 0;
+    }
+  }
+</style>

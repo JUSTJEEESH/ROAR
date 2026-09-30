@@ -126,6 +126,71 @@ ol[role='list'] {
   transform: none;
 }
 
+/* Section building blocks shared by home sections */
+.section-title {
+  font-size: var(--text-2xl);
+  color: var(--color-primary);
+  max-width: 22ch;
+}
+
+.lede {
+  font-size: var(--text-lg);
+  max-width: var(--measure);
+}
+
+/* Editorial columns: top rule, no card chrome */
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+}
+.cols > li {
+  border-top: 3px solid var(--color-primary);
+  padding-top: var(--space-4);
+}
+.cols h3 {
+  font-size: var(--text-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-2);
+}
+@media (min-width: 48em) {
+  .cols--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+  .cols--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64em) {
+  .cols--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+@media (min-width: 48em) and (max-width: 63.99em) {
+  .cols--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Dark ocean band */
+.on-dark {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.on-dark .section-title {
+  color: var(--color-on-primary);
+}
+.on-dark .eyebrow {
+  color: var(--color-on-primary-muted);
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
 /* Photo placeholder: visible label so gaps are obvious in review */
 .photo-placeholder {
   display: grid;

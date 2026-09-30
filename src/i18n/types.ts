@@ -36,6 +36,10 @@ export interface Copy {
     donate: string;
     contactRoar: string;
     seeHowItWorks: string;
+    whyDifferent: string;
+    exploreStrategy: string;
+    seeMobileUnit: string;
+    oneTimeDonation: string;
     /** Shown when an external link is still unconfirmed (dev tooltip only) */
     unconfirmedLink: string;
   };
@@ -65,7 +69,67 @@ export interface Copy {
       body: string;
       photoLabel: string;
     };
+  } & Sections;
+}
+
+export interface Point {
+  title: string;
+  text: string;
+}
+export interface Sections {
+  problem: {
+    title: string;
+    intro: [string, string, string];
+    points: [Point, Point, Point];
   };
+  idea: {
+    titleA: string;
+    titleB: string;
+    lead: string;
+    motto: string;
+    body: string;
+    mapNote: string;
+    mapDescription: string;
+  };
+  how: {
+    title: string;
+    steps: [Point, Point, Point, Point, Point];
+  };
+  unit: {
+    titleA: string;
+    titleB: string;
+    body: string;
+    features: [Point, Point, Point, Point];
+    photoLabel: string;
+  };
+  different: {
+    title: string;
+    body: string;
+    cols: [Point, Point, Point];
+    note: string;
+  };
+  founding: {
+    title: [string, string, string];
+    subtitle: string;
+    body: [string, string];
+    perMonth: string;
+    forMonths: string;
+    or: string;
+    perYear: string;
+    benefitsHeading: string;
+    count: string;
+    goalLabel: string;
+    progressLabel: string;
+  };
+  transparency: {
+    title: string;
+    body: [string, string];
+    funding: { title: string; text: string; unconfirmed: string; launchGoal: string; totalCost: string; raised: string; restricted: string };
+    progress: { title: string; text: string; unconfirmed: string; status: { done: string; in_progress: string; planned: string } };
+    impact: { title: string; text: string; unconfirmed: string; animalsReached: string; sterilizations: string; sectorsCovered: string; asOf: string };
+  };
+  partners: { title: string; empty: string };
+  finalCta: { title: string; lines: [string, string, string] };
 }
 
 export type Locale = 'en' | 'es';

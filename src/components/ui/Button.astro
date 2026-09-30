@@ -5,6 +5,8 @@ interface Props {
   variant?: 'primary' | 'secondary' | 'ghost';
   /** Full width on small screens */
   block?: boolean;
+  /** Use on the dark ocean sections so secondary buttons stay visible */
+  onDark?: boolean;
   class?: string;
   unconfirmedLabel?: string;
   [attr: string]: unknown;
@@ -14,6 +16,7 @@ const {
   href,
   variant = 'primary',
   block = false,
+  onDark = false,
   class: className,
   unconfirmedLabel,
   ...rest
@@ -28,7 +31,7 @@ const title = disabled && import.meta.env.DEV ? unconfirmedLabel : undefined;
   role={disabled ? 'link' : undefined}
   aria-disabled={disabled ? 'true' : undefined}
   title={title}
-  class:list={['btn', `btn--${variant}`, { 'btn--block': block }, className]}
+  class:list={['btn', `btn--${variant}`, { 'btn--block': block, 'btn--on-dark': onDark }, className]}
   {...rest}
 >
   <slot />
@@ -84,6 +87,15 @@ const title = disabled && import.meta.env.DEV ? unconfirmedLabel : undefined;
     background: var(--color-primary);
     border-color: var(--color-primary);
     color: var(--color-on-primary);
+  }
+
+  .btn--secondary.btn--on-dark {
+    color: var(--color-on-primary);
+  }
+  .btn--secondary.btn--on-dark:hover {
+    background: var(--color-on-primary);
+    border-color: var(--color-on-primary);
+    color: var(--color-primary);
   }
 
   .btn--ghost {

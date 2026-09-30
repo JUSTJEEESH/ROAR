@@ -15,14 +15,15 @@ export interface Partner {
   name: string;
   /** Path under src/assets/partners/, or null if no logo supplied */
   logo: string | null;
-  description?: string;
+  description?: { en: string; es: string };
   url?: string;
   /** Only render when the partner has approved use of their name/logo */
   approved: boolean;
 }
 
 export interface Milestone {
-  label: string;
+  /** Bilingual label so the CEO can edit both languages in one place */
+  label: { en: string; es: string };
   status: Status;
   /** ISO date or free text like "Q1 2027". Optional. */
   date?: string;
