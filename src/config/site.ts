@@ -62,6 +62,12 @@ export const site = {
     showBudgetDisclaimer: true,
   },
 
+  strategy: {
+    /** "Around 70% sterilization coverage within a defined area", from current ROAR material.
+     *  Not yet confirmed with the CEO or a cited source (OPEN_QUESTIONS J1). null hides the claim. */
+    coverageTargetPercent: 70 as number | null,
+  },
+
   links: {
     /** Zeffy membership page. Empty string = unconfirmed; render CTA as aria-disabled in dev. */
     membership: '',
@@ -136,6 +142,7 @@ export function unconfirmedFields(): string[] {
   if (c.totalProjectCost === null) out.push('campaign.totalProjectCost');
   if (c.fundsRestrictedToBuild === null) out.push('campaign.fundsRestrictedToBuild');
   if (site.foundingMembers.currentCount === null) out.push('foundingMembers.currentCount (optional)');
+  if (site.strategy.coverageTargetPercent !== null) out.push('strategy.coverageTargetPercent (confirm figure + source)');
   if (!site.links.membership) out.push('links.membership');
   if (!site.links.donation) out.push('links.donation');
   if (!site.links.equipmentRegistry) out.push('links.equipmentRegistry (or confirm inactive)');

@@ -96,6 +96,18 @@ Format: question → config field → status.
 | I8 | Photos needed for Phase 2 placeholders: hero photo (real animal or community), and a mobile unit rendering or build photo. | Open |
 | I9 | Partners: until at least one partner has approved (D2), the section shows a "will be listed here" line. Preferred wording, or hide the section entirely until then? | Open |
 
+## J. Added during build (Phase 3)
+
+| # | Item | Status |
+|---|---|---|
+| J1 | Strategy page says the program targets "around 70%" sterilization coverage (`strategy.coverageTargetPercent`). The brief calls it "current ROAR material". Confirm the figure and the source to cite. Set to `null` to hide the claim. | Open |
+| J2 | FAQ answers I could not write from the brief are **hidden in production** until ROAR supplies them: after surgery, where animals recover, critically ill animals, bringing a sick animal, bringing a rescue, volunteers inside the unit, how money is tracked, what membership funds, cancelling monthly, what happens after year one, shirt delivery, how the card works, how businesses participate. Answers needed (extends E4, B5, B6). | Open |
+| J3 | "Vacuum effect" explanation and the Sector Sweep step descriptions are my drafts of general ideas from the brief. Confirm they match how ROAR describes them (`TODO(copy)`). | Open |
+| J4 | Mobile Unit page "Built for field medicine" lists planned features from the brief (surgical workspace, recovery/monitoring, climate control, power, equipment, storage). Water/sanitation is left out until confirmed (E2). | Open |
+| J5 | Partnerships section on the Strategy page stays hidden until WVS / Mission Rabies are `approved: true` with approved wording in `advisors[].description` (D3, D4). | Open |
+| J6 | Contact form shows "not connected yet" until `contact.formspreeId` is set (F6). Donate/membership buttons show a disabled state plus "Online sign-up isn't available yet" until the Zeffy links are set (B4, C1). The "Sponsor the build" option only appears once `links.equipmentRegistry` is set (C2). | Open |
+| J7 | Privacy and Terms are plain-language drafts flagged `TODO(legal)`. They mention Formspree, Zeffy and (optionally) privacy-focused analytics. Needs CEO or counsel review (H4). | Open |
+
 ---
 
 ## Resolved

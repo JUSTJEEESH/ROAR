@@ -1,0 +1,96 @@
+---
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const v = t(locale).pages.strategy.vacuum;
+
+/* Illustrative only. Dot counts are not data; the caption says so. */
+const dots = [
+  [70, 70], [130, 60], [190, 75], [95, 120], [160, 115],
+  [215, 130], [75, 165], [135, 170], [195, 175], [240, 90],
+];
+const panels = [
+  { label: v.before, filled: 2, arrows: [[10, 20, 50, 60], [290, 30, 250, 70], [290, 180, 250, 150]] },
+  { label: v.after, filled: 8, arrows: [[290, 30, 252, 68]] },
+];
+---
+
+<figure class="vac">
+  <div class="vac__panels" role="img" aria-label={v.description}>
+    {
+      panels.map((p) => (
+        <div class="vac__panel">
+          <svg viewBox="0 0 300 210" aria-hidden="true" focusable="false">
+            <defs>
+              <marker id={`ah-${p.filled}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0 0L10 5L0 10z" class="arrow-head" />
+              </marker>
+            </defs>
+            <rect x="40" y="40" width="220" height="150" class="area" />
+            {p.arrows.map(([x1, y1, x2, y2]) => (
+              <line x1={x1} y1={y1} x2={x2} y2={y2} class="arrow" marker-end={`url(#ah-${p.filled})`} />
+            ))}
+            {dots.map(([cx, cy], i) => (
+              <circle cx={cx} cy={cy} r="9" class:list={['dot', { 'dot--on': i < p.filled }]} />
+            ))}
+          </svg>
+          <figcaption class="vac__label">{p.label}</figcaption>
+        </div>
+      ))
+    }
+  </div>
+  <p class="vac__note">{v.note}</p>
+</figure>
+
+<style>
+  .vac {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .vac__panels {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .vac__panel {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .area {
+    fill: var(--color-surface);
+    stroke: var(--color-primary);
+    stroke-width: 3;
+  }
+  .dot {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 3;
+  }
+  .dot--on {
+    fill: var(--color-primary);
+  }
+  .arrow {
+    stroke: var(--color-accent);
+    stroke-width: 4;
+  }
+  .arrow-head {
+    fill: var(--color-accent);
+  }
+  .vac__label {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .vac__note {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+  @media (min-width: 40em) {
+    .vac__panels {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

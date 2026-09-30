@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/pages/ContactForm.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import { site } from '../config/site';
+import { localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const p = c.pages.contact;
+const meta = c.pages.meta.contact;
+const disconnected = !site.contact.formspreeId;
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <PageHero title={p.title} />
+
+  <section class="section contact">
+    <div class="container grid">
+      <dl class="details">
+        <div>
+          <dt class="eyebrow">{p.emailLabel}</dt>
+          <dd><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></dd>
+        </div>
+        <div>
+          <dt class="eyebrow">{p.locationLabel}</dt>
+          <dd>{site.contact.location}</dd>
+        </div>
+      </dl>
+      <div class="form">
+        {disconnected && <p class="notice">{p.disconnected}</p>}
+        <ContactForm locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.contact.title}
+    text={c.pages.next.contact.text}
+    actions={[
+      { href: localizedPath(locale, '/become-a-member'), label: c.cta.founding, analytics: 'membership_cta_click' },
+      { href: localizedPath(locale, '/donate'), label: c.cta.donate, variant: 'secondary', analytics: 'donation_cta_click' },
+    ]}
+  />
+</Base>
+
+<style>
+  .contact {
+    padding-top: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .details {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+  .details dd {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  .details a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch);
+  }
+  .notice {
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    border: 2px dashed var(--color-muted);
+    font-weight: 700;
+  }
+  @media (min-width: 64em) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-16);
+    }
+  }
+</style>

@@ -1,4 +1,5 @@
 import type { Copy } from './types';
+import { pagesEs } from './pages.es';
 
 /**
  * Central American Spanish. reviewed: false until a native speaker signs off
@@ -64,6 +65,7 @@ export const es: Copy = {
     monthlyPerk: 'Beneficio mensual de un negocio local',
     monthlyUpdates: 'Informes mensuales de avance',
   },
+  pages: pagesEs,
   home: {
     hero: {
       eyebrow: 'ROAR Mobile',

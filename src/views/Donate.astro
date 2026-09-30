@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import LinkCta from '../components/ui/LinkCta.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import { site } from '../config/site';
+import { copyVars } from '../i18n/faq';
+import { fmt, localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const d = c.pages.donate;
+const vars = copyVars(locale);
+const meta = c.pages.meta.donate;
+// "Sponsor the build" only shows once the equipment registry link is confirmed active (dev always shows it).
+const showSponsor = Boolean(site.links.equipmentRegistry) || import.meta.env.DEV;
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <PageHero title={d.title} subtitle={d.subtitle} />
+
+  <section class="section options" aria-label={d.title}>
+    <div class="container">
+      <ol role="list" class="opts">
+        <li>
+          <h2>{d.member.title}</h2>
+          <p>{fmt(d.member.text, vars)}</p>
+          <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+            {c.cta.founding}
+          </Button>
+        </li>
+        <li>
+          <h2>{d.gift.title}</h2>
+          <p>{d.gift.text}</p>
+          <LinkCta locale={locale} href={site.links.donation} variant="secondary" analytics="donation_cta_click">
+            {c.cta.donate}
+          </LinkCta>
+        </li>
+        {
+          showSponsor && (
+            <li>
+              <h2>{d.sponsor.title}</h2>
+              <p>{d.sponsor.text}</p>
+              <LinkCta locale={locale} href={site.links.equipmentRegistry} variant="secondary" analytics="equipment_registry_click">
+                {d.sponsor.title}
+              </LinkCta>
+            </li>
+          )
+        }
+      </ol>
+      <p class="tax">{d.taxNote}</p>
+    </div>
+  </section>
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.donate.title}
+    text={c.pages.next.donate.text}
+    actions={[
+      { href: localizedPath(locale, '/become-a-member'), label: c.cta.founding, analytics: 'membership_cta_click' },
+      { href: localizedPath(locale, '/contact'), label: c.cta.contactRoar, variant: 'secondary' },
+    ]}
+  />
+</Base>
+
+<style>
+  .options {
+    padding-top: 0;
+  }
+  .opts {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .opts li {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+    border-top: 3px solid var(--color-primary);
+    padding-top: var(--space-4);
+  }
+  .opts h2 {
+    font-size: var(--text-xl);
+    color: var(--color-primary);
+  }
+  .tax {
+    margin-top: var(--space-12);
+    max-width: var(--measure);
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+  @media (min-width: 48em) {
+    .opts {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: var(--space-6);
+    }
+  }
+</style>

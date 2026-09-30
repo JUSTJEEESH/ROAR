@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SweepDiagram from '../components/pages/SweepDiagram.astro';
+import VacuumDiagram from '../components/pages/VacuumDiagram.astro';
+import { site } from '../config/site';
+import { copyVars } from '../i18n/faq';
+import { fmt, localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const s = c.pages.strategy;
+const vars = copyVars(locale);
+const meta = c.pages.meta.strategy;
+const showCoverage = site.strategy.coverageTargetPercent !== null;
+const advisors = site.advisors.filter((a) => a.approved && a.description);
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <PageHero title={s.title} subtitle={s.subtitle} />
+
+  <section class="section" aria-labelledby="challenge-title">
+    <div class="container narrow stack">
+      <h2 id="challenge-title" class="section-title">{s.challenge.title}</h2>
+      <p class="lede">{s.challenge.body[0]}</p>
+      <p>{s.challenge.body[1]}</p>
+    </div>
+  </section>
+
+  {
+    showCoverage && (
+      <section class="section on-dark" aria-labelledby="coverage-title">
+        <div class="container narrow stack">
+          <h2 id="coverage-title" class="section-title">{s.coverage.title}</h2>
+          <p class="big">{fmt(s.coverage.body, vars)}</p>
+          <p>{s.coverage.caveat}</p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="vacuum-title">
+    <div class="container two">
+      <div class="stack">
+        <h2 id="vacuum-title" class="section-title">{s.vacuum.title}</h2>
+        <p class="lede">{s.vacuum.body[0]}</p>
+        <p>{s.vacuum.body[1]}</p>
+      </div>
+      <VacuumDiagram locale={locale} />
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="sweep-title">
+    <div class="container two">
+      <div class="stack">
+        <h2 id="sweep-title" class="section-title">{s.sweep.title}</h2>
+        <p class="lede">{s.sweep.intro}</p>
+        <SweepDiagram locale={locale} />
+      </div>
+      <ol role="list" class="steps">
+        {
+          s.sweep.steps.map((st, i) => (
+            <li>
+              <span class="n" aria-hidden="true">{i + 1}</span>
+              <div>
+                <h3>{st.title}</h3>
+                <p>{st.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="data-title">
+    <div class="container stack-lg">
+      <div class="stack">
+        <h2 id="data-title" class="section-title">{s.data.title}</h2>
+        <p class="lede">{s.data.intro}</p>
+      </div>
+      <ul role="list" class="cols cols--3">
+        {
+          s.data.items.map((it) => (
+            <li>
+              <h3>{it.title}</h3>
+              <p>{it.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="maint-title">
+    <div class="container narrow stack">
+      <h2 id="maint-title" class="section-title">{s.maintenance.title}</h2>
+      <p class="lede">{s.maintenance.body}</p>
+    </div>
+  </section>
+
+  {
+    advisors.length > 0 && (
+      <section class="section" aria-labelledby="partner-title">
+        <div class="container stack-lg">
+          <div class="stack">
+            <h2 id="partner-title" class="section-title">{s.partnerships.title}</h2>
+            <p class="lede">{s.partnerships.intro}</p>
+          </div>
+          <ul role="list" class="cols cols--2">
+            {advisors.map((a) => (
+              <li>
+                <h3>{a.name}</h3>
+                <p>{a.description![locale]}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.strategy.title}
+    text={c.pages.next.strategy.text}
+    actions={[
+      { href: localizedPath(locale, '/the-mobile-unit'), label: c.cta.seeMobileUnit },
+      { href: localizedPath(locale, '/become-a-member'), label: c.cta.founding, variant: 'secondary', analytics: 'membership_cta_click' },
+    ]}
+  />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .alt {
+    background: var(--color-alt);
+  }
+  .big {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .stack-lg {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .steps {
+    display: grid;
+    gap: var(--space-6);
+    align-content: start;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+  .n {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-weight: 800;
+    font-size: var(--text-lg);
+  }
+  .steps h3 {
+    font-size: var(--text-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-1);
+  }
+  @media (min-width: 64em) {
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-16);
+      align-items: start;
+    }
+  }
+</style>

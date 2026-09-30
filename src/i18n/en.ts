@@ -1,4 +1,5 @@
 import type { Copy } from './types';
+import { pagesEn } from './pages.en';
 
 export const en: Copy = {
   reviewed: true,
@@ -60,6 +61,7 @@ export const en: Copy = {
     monthlyPerk: 'Monthly local business perk',
     monthlyUpdates: 'Monthly progress updates',
   },
+  pages: pagesEn,
   home: {
     hero: {
       eyebrow: 'ROAR Mobile',
