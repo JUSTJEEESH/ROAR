@@ -71,7 +71,7 @@ Format: question → config field → status.
 
 | # | Item | Status |
 |---|---|---|
-| G1 | Who reviews the Spanish copy? (Native speaker, ideally someone on the ROAR team.) | Open |
+| G1 | Who reviews the Spanish copy? (Native speaker, ideally someone on the ROAR team.) | Open. Send `docs/SPANISH_REVIEW.md` (side-by-side EN/ES, plus terminology questions). Then set `reviewed: true` in `src/i18n/es.ts`. |
 
 ## H. Technical / launch
 

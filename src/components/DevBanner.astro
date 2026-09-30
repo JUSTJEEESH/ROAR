@@ -1,6 +1,9 @@
 ---
 import { unconfirmedFields } from '../config/site';
+import { es } from '../i18n/es';
+
 const fields = unconfirmedFields();
+if (!es.reviewed) fields.push('i18n/es: Spanish copy not native-reviewed (docs/SPANISH_REVIEW.md)');
 ---
 
 {
