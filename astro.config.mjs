@@ -6,7 +6,9 @@ export default defineConfig({
   output: 'static',
   // /the-strategy, not /the-strategy/. Both Cloudflare Pages and Netlify serve foo.html at /foo.
   trailingSlash: 'never',
-  build: { format: 'file' },
+  // Emit scripts and stylesheets as files (no inline <script>/<style>) so public/_headers can ship a strict CSP.
+  build: { format: 'file', inlineStylesheets: 'never' },
+  vite: { build: { assetsInlineLimit: 0 } },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es'],

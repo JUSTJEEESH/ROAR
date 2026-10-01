@@ -122,9 +122,18 @@ Format: question → config field → status.
 
 | # | Item | Status |
 |---|---|---|
-| L1 | **Josh: dependency audit.** `npm audit` reports 5 issues (1 critical, 1 high, 2 moderate, 1 low). The critical ones are all Astro advisories in features this site does not use (SSR, server islands, view transitions, hydrated islands) plus an AVIF-optimization one that only matters for untrusted images. The site is static and uses only our own images, so none is reachable today. The fix is a major upgrade (Astro 5 to 7), which CLAUDE.md says to ask about. Recommend upgrading before launch (Phase 7). Decision needed. | Open |
+| L1 | **Dependency audit: resolved.** Upgraded Astro 5 to 7 (Node 22.12+ required). Critical, high and low findings cleared with no code changes. One moderate remains: a ZIP-parsing issue in `fflate` inside `satori`, used only at build time to draw the social image. We never parse ZIP files, so it is not reachable. | Resolved |
 | L2 | **Josh: VoiceOver on iPhone** and the other manual checks in `docs/ACCESSIBILITY.md`. I cannot run a screen reader here. | Open |
 | L3 | Real photos: when they arrive, set `site.photos.hero` and `site.photos.unit` (file name plus EN/ES alt text describing the photo). Alt text cannot be written before the photos exist. | Open (needs F3, F4) |
+
+## M. Added during build (Phase 7)
+
+| # | Item | Status |
+|---|---|---|
+| M1 | Donate on mobile is one tap away (menu) and in four other places, but not visible without opening the menu. The brief's sticky bar carries only the membership CTA. Add a small Donate link to the mobile header or sticky bar? | Open (Josh) |
+| M2 | A strict Content-Security-Policy is in `public/_headers`. It allows only the site, Formspree and Plausible. Any future embed (video, map, new font service) must be added there. | Decided |
+| M3 | Real-device testing (iPhone Safari, Android Chrome, desktop Safari) could not be done here. Chromium-based device emulation passed. | Open (Josh) |
+| M4 | Cloudflare Pages account: who owns it, and which GitHub account connects to it? Needed for deployment (H1). | Open |
 
 ---
 

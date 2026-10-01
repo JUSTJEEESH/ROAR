@@ -1,42 +1,60 @@
-# ROAR Mobile handoff: how to start
+# ROAR Mobile website
 
-## What's in this folder
+Mobile-first, bilingual (English / Spanish) static site for **ROAR Mobile**, a mobile veterinary program of Roatan Operation Animal Rescue on Roatán, Honduras. Replaces the Zibster-hosted site at https://www.roarmobile.org/.
 
-```
-CLAUDE.md                 Rules Claude Code reads every session
-README.md                 This file
-docs/BRIEF.md             Your full design/content brief
-docs/BUILD_PLAN.md        Stack decisions, repo structure, 7 phases with gates
-docs/OPEN_QUESTIONS.md    Everything the CEO still needs to confirm
-src/config/site.ts        Starter single-source-of-truth config
-```
+Built with Astro 7 (static output), TypeScript, and plain CSS. No Tailwind, no component library, no animation library.
 
-## Steps
+## Run it
 
-1. Create a new empty folder for the project and copy everything in this handoff into it.
-2. `git init && git add . && git commit -m "chore: brief, plan, and config"`
-3. Drop any ROAR assets you already have into `src/assets/logo/` and `src/assets/photos/`. If you have none yet, that's fine; the plan handles placeholders.
-4. Open Claude Code in the folder and paste the kickoff prompt below.
-5. Before Phase 2, send the CEO sections A–F of `docs/OPEN_QUESTIONS.md`. Nothing in the money sections should ship until A1–A4 and B1–B4 are answered.
+Needs Node 22.12 or newer (`nvm use` reads `.nvmrc`).
 
-## Kickoff prompt (paste into Claude Code)
-
-```
-Read CLAUDE.md, then docs/BRIEF.md, then docs/BUILD_PLAN.md, then docs/OPEN_QUESTIONS.md and src/config/site.ts.
-
-Before writing any code, give me:
-1. A short confirmation of the stack and URL structure from BUILD_PLAN §0.
-2. Anything in the brief you think conflicts with CLAUDE.md or BUILD_PLAN, or that you'd push back on.
-3. The list of assets you'll need placeholders for in Phase 1 and 2.
-
-Then start Phase 1 (Foundation) exactly as written in BUILD_PLAN §3. Stop at the Phase 1 gate and show me the result at 320px, 390px, and 1440px before touching the homepage.
-
-Rules to keep in front of you: never invent a number, every changing value comes from src/config/site.ts, all copy lives in src/i18n, mobile first from 320px, no Tailwind or animation libraries, no stock or AI imagery.
+```bash
+npm install
+npm run dev        # http://localhost:4321  (Spanish at /es)
+npm run build      # static output in dist/
+npm run preview    # serve the production build
+npm run check      # type check (astro check)
 ```
 
-## Later prompts
+To see it on a phone on the same Wi-Fi: `npm run dev -- --host`, then open the "Network" address it prints.
 
-- "Start Phase 2. Build the homepage sections in the order listed. Stop at the gate."
-- "The CEO confirmed: total project cost $X, launch goal $Y, membership URL Z. Update site.ts and move those rows to Resolved in OPEN_QUESTIONS.md."
-- "Here are the real logo and photos in src/assets. Extract the brand palette from the logo, update tokens.css, and replace the placeholders."
-- "Run the Phase 7 QA checklist and walk through the Definition of Done in BRIEF §38 line by line."
+## Where things live
+
+| What | Where |
+|---|---|
+| Prices, links, partners, milestones, photos, legal wording | `src/config/site.ts` (the single source of truth) |
+| All wording, English and Spanish | `src/i18n/` |
+| Page layouts | `src/views/`, with thin route files in `src/pages/` and `src/pages/es/` |
+| Components | `src/components/` |
+| Design tokens (colors, type, spacing) | `src/styles/tokens.css` |
+| Real photos and partner logos | `src/assets/photos/`, `src/assets/partners/` |
+| Headers, redirects, robots | `public/_headers`, `public/_redirects`, `public/robots.txt` |
+
+## Docs
+
+| Doc | For |
+|---|---|
+| `CLAUDE.md` | Rules the build follows (never invent a number, one source of truth, mobile first, ...) |
+| `docs/BRIEF.md` | The design, content and IA brief |
+| `docs/BUILD_PLAN.md` | Stack decisions and the phase plan |
+| `docs/OPEN_QUESTIONS.md` | Every fact still needing the CEO's confirmation |
+| `docs/LAUNCH_CHECKLIST.md` | What is left before launch, in one list |
+| `docs/DEFINITION_OF_DONE.md` | The brief's Definition of Done, line by line, plus the test matrix |
+| `docs/EDITING.md` | How the CEO updates values on the site |
+| `docs/DEPLOYMENT.md` | Cloudflare Pages setup, moving the domain off Zibster, rollback |
+| `docs/ACCESSIBILITY.md` | Accessibility and performance record, plus manual checks |
+| `docs/SPANISH_REVIEW.md` | Side-by-side EN/ES sheet for the native-speaker review |
+
+## Status
+
+| Phase | State |
+|---|---|
+| 1 Foundation | Done |
+| 2 Homepage | Done |
+| 3 Internal pages | Done |
+| 4 Spanish | Done. Native-speaker review pending |
+| 5 SEO and sharing | Done |
+| 6 Performance and accessibility | Done. VoiceOver pass pending |
+| 7 QA and launch prep | Done. Waiting on CEO content, assets, and the domain switch |
+
+The site is built to render honestly with missing information: unconfirmed numbers and links show a clear "not yet" state rather than a guess. Filling in `src/config/site.ts` switches each section to its confirmed state with no code changes.
