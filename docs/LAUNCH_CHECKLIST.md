@@ -4,6 +4,8 @@ A single list pulled from `docs/OPEN_QUESTIONS.md` (the full detail and question
 
 ## A. Needed from the CEO (these block launch)
 
+A ready-to-send email covering all of these is in `docs/CEO_EMAIL.md`, along with a note for the Spanish reviewer.
+
 Money (nothing in the money sections should go live without these):
 - [ ] The **one** official total project cost, or one range (A1). The old site shows three different figures; none was used.
 - [ ] Is the initial fundraising goal still $100,000? (A2)
