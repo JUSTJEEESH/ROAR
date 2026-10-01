@@ -21,6 +21,7 @@ export interface Copy {
     footerNav: string;
     language: string;
     switchTo: string;
+    quickAction: string;
   };
   nav: {
     whyRoar: string;

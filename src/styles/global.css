@@ -24,8 +24,12 @@ body {
   overflow-x: clip;
 }
 
-/* Room for the mobile sticky bar so it never covers the footer */
+/* Room for the mobile sticky bar so it never covers the footer, and so a keyboard-focused
+   element is scrolled above the bar instead of under it (WCAG 2.2 Focus Not Obscured). */
 @media (max-width: 47.99em) {
+  html {
+    scroll-padding-block-end: calc(var(--sticky-h) + env(safe-area-inset-bottom) + var(--space-4));
+  }
   body {
     padding-bottom: calc(var(--sticky-h) + env(safe-area-inset-bottom));
   }
@@ -75,6 +79,17 @@ ol[role='list'] {
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+/* The orange ring has ~1.6:1 contrast on ocean blue. Use the light tint on dark surfaces. */
+.on-dark :focus-visible,
+.footer :focus-visible {
+  outline-color: var(--color-accent-on-dark);
+}
+
+/* Skip-link target: focus lands here but the whole page shouldn't get a ring */
+main:focus {
+  outline: none;
 }
 
 /* Layout helpers */

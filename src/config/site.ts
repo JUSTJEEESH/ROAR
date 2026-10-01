@@ -21,6 +21,13 @@ export interface Partner {
   approved: boolean;
 }
 
+export interface PhotoSpec {
+  /** File name inside src/assets/photos/ */
+  file: string;
+  /** Describes what is actually in the photo, in both languages */
+  alt: { en: string; es: string };
+}
+
 export interface Milestone {
   /** Bilingual label so the CEO can edit both languages in one place */
   label: { en: string; es: string };
@@ -110,6 +117,12 @@ export const site = {
     { name: 'Mission Rabies', logo: null, url: '', approved: false },
   ] as Partner[],
 
+  /** Real photography. null = a labeled placeholder block renders instead (CLAUDE.md rule 5). */
+  photos: {
+    hero: null as PhotoSpec | null,
+    unit: null as PhotoSpec | null,
+  },
+
   milestones: [] as Milestone[],
 
   /** Field impact metrics. All null until operations begin and figures are verified. */
@@ -146,6 +159,8 @@ export function unconfirmedFields(): string[] {
   if (c.fundsRestrictedToBuild === null) out.push('campaign.fundsRestrictedToBuild');
   if (site.foundingMembers.currentCount === null) out.push('foundingMembers.currentCount (optional)');
   if (site.strategy.coverageTargetPercent !== null) out.push('strategy.coverageTargetPercent (confirm figure + source)');
+  if (site.photos.hero === null) out.push('photos.hero (placeholder showing)');
+  if (site.photos.unit === null) out.push('photos.unit (placeholder showing)');
   if (!site.links.membership) out.push('links.membership');
   if (!site.links.donation) out.push('links.donation');
   if (!site.links.equipmentRegistry) out.push('links.equipmentRegistry (or confirm inactive)');

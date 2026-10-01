@@ -24,6 +24,7 @@ export const es: Copy = {
     footerNav: 'Pie de página',
     language: 'Idioma',
     switchTo: 'Cambiar a English',
+    quickAction: 'Acción rápida',
   },
   nav: {
     whyRoar: 'Por qué ROAR',

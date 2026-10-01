@@ -118,6 +118,14 @@ Format: question → config field → status.
 | K4 | Per-page share images are not generated (optional in the plan). Every page uses the default image. Want custom images for the membership and donate pages? | Open |
 | K5 | URL convention decided: no trailing slash (`/the-strategy`), English root `/`, Spanish root `/es`. Hosts serve these directly with no redirect. Cloudflare Pages and Netlify both handle this. If the CEO's host differs, tell Josh. | Decided |
 
+## L. Added during build (Phase 6)
+
+| # | Item | Status |
+|---|---|---|
+| L1 | **Josh: dependency audit.** `npm audit` reports 5 issues (1 critical, 1 high, 2 moderate, 1 low). The critical ones are all Astro advisories in features this site does not use (SSR, server islands, view transitions, hydrated islands) plus an AVIF-optimization one that only matters for untrusted images. The site is static and uses only our own images, so none is reachable today. The fix is a major upgrade (Astro 5 to 7), which CLAUDE.md says to ask about. Recommend upgrading before launch (Phase 7). Decision needed. | Open |
+| L2 | **Josh: VoiceOver on iPhone** and the other manual checks in `docs/ACCESSIBILITY.md`. I cannot run a screen reader here. | Open |
+| L3 | Real photos: when they arrive, set `site.photos.hero` and `site.photos.unit` (file name plus EN/ES alt text describing the photo). Alt text cannot be written before the photos exist. | Open (needs F3, F4) |
+
 ---
 
 ## Resolved

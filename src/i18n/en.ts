@@ -20,6 +20,7 @@ export const en: Copy = {
     footerNav: 'Footer',
     language: 'Language',
     switchTo: 'Switch to Español',
+    quickAction: 'Quick action',
   },
   nav: {
     whyRoar: 'Why ROAR',

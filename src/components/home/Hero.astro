@@ -2,6 +2,7 @@
 import { localizedPath, t } from '../../i18n/utils';
 import type { Locale } from '../../i18n/types';
 import Button from '../ui/Button.astro';
+import Photo from '../ui/Photo.astro';
 
 interface Props {
   locale: Locale;
@@ -27,8 +28,8 @@ const hero = c.home.hero;
         <Button href="#how-it-works" variant="secondary" block>{c.cta.seeHowItWorks}</Button>
       </div>
     </div>
-    <div class="photo-placeholder hero__photo" role="img" aria-label={hero.photoLabel}>
-      {hero.photoLabel}
+    <div class="hero__photo">
+      <Photo name="hero" locale={locale} placeholder={hero.photoLabel} priority sizes="(min-width: 64em) 45vw, 100vw" />
     </div>
   </div>
 </section>
@@ -67,6 +68,7 @@ const hero = c.home.hero;
   }
   .hero__photo {
     aspect-ratio: 4 / 3;
+    overflow: hidden;
   }
   @media (min-width: 48em) {
     .hero__actions {

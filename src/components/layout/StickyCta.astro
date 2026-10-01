@@ -11,11 +11,11 @@ const { locale } = Astro.props;
 
 <!-- Mobile-only bar. Elements marked [data-hides-sticky] hide it while in view.
      Without JS it stays visible. -->
-<div class="sticky-cta" data-sticky-cta>
+<aside class="sticky-cta" data-sticky-cta aria-label={t(locale).a11y.quickAction}>
   <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
     {t(locale).cta.founding}
   </Button>
-</div>
+</aside>
 
 <script>
   const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');

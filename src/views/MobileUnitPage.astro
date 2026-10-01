@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import NextAction from '../components/ui/NextAction.astro';
 import PageHero from '../components/ui/PageHero.astro';
+import Photo from '../components/ui/Photo.astro';
 import { site } from '../config/site';
 import { formatMoney, teamLines } from '../i18n/faq';
 import { localizedPath, t } from '../i18n/utils';
@@ -27,7 +28,9 @@ const budget =
   <PageHero title={u.title} subtitle={u.subtitle} />
 
   <div class="container">
-    <div class="photo-placeholder hero-photo" role="img" aria-label={u.photoLabel}>{u.photoLabel}</div>
+    <div class="hero-photo">
+      <Photo name="unit" locale={locale} placeholder={u.photoLabel} priority sizes="(min-width: 76em) 1216px, 100vw" />
+    </div>
   </div>
 
   <section class="section" aria-labelledby="island-title">
@@ -113,6 +116,7 @@ const budget =
 <style>
   .hero-photo {
     aspect-ratio: 4 / 3;
+    overflow: hidden;
   }
   .narrow {
     max-width: 48rem;
