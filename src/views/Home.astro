@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import OrgJsonLd from '../components/seo/OrgJsonLd.astro';
+import Different from '../components/home/Different.astro';
+import FinalCta from '../components/home/FinalCta.astro';
+import Founding250 from '../components/home/Founding250.astro';
+import Hero from '../components/home/Hero.astro';
+import HowItWorks from '../components/home/HowItWorks.astro';
+import Idea from '../components/home/Idea.astro';
+import MobileUnit from '../components/home/MobileUnit.astro';
+import Partners from '../components/home/Partners.astro';
+import Problem from '../components/home/Problem.astro';
+import Transparency from '../components/home/Transparency.astro';
+import { t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+---
+
+<Base title={c.meta.homeTitle} description={c.meta.homeDescription} locale={locale}>
+  <OrgJsonLd slot="head" locale={locale} />
+  <Hero locale={locale} />
+  <Problem locale={locale} />
+  <Idea locale={locale} />
+  <HowItWorks locale={locale} />
+  <MobileUnit locale={locale} />
+  <Different locale={locale} />
+  <Founding250 locale={locale} />
+  <Transparency locale={locale} />
+  <Partners locale={locale} />
+  <FinalCta locale={locale} />
+</Base>

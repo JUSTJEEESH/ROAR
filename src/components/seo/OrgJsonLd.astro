@@ -1,0 +1,48 @@
+---
+import { site } from '../../config/site';
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import JsonLd from './JsonLd.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const abs = (p: string) => new URL(p, site.url).toString();
+const home = abs(locale === 'es' ? '/es' : '/');
+const sameAs = [site.links.facebook, site.links.instagram].filter(Boolean);
+
+// Everything here comes from site.ts or the copy files. No logo until real logo files exist (OPEN_QUESTIONS F1).
+// Nonprofit-status properties are omitted until the CEO supplies exact legal wording (D5).
+const data = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${abs('/')}#website`,
+      url: abs('/'),
+      name: site.name,
+      inLanguage: [...site.locales],
+    },
+    {
+      '@type': 'NGO',
+      '@id': `${abs('/')}#organization`,
+      name: site.name,
+      url: home,
+      description: t(locale).meta.homeDescription,
+      email: site.contact.email,
+      image: abs(`/og/${locale}.png`),
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: site.contact.addressLocality,
+        addressCountry: site.contact.countryCode,
+      },
+      areaServed: { '@type': 'Place', name: site.contact.location },
+      parentOrganization: { '@type': 'Organization', name: site.parentOrg },
+      ...(sameAs.length > 0 && { sameAs }),
+    },
+  ],
+};
+---
+
+<JsonLd data={data} />

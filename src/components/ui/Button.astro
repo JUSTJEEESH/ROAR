@@ -1,0 +1,112 @@
+---
+interface Props {
+  /** Empty or missing href renders an aria-disabled button, never a dead "#" */
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  /** Full width on small screens */
+  block?: boolean;
+  /** Use on the dark ocean sections so secondary buttons stay visible */
+  onDark?: boolean;
+  class?: string;
+  unconfirmedLabel?: string;
+  [attr: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  block = false,
+  onDark = false,
+  class: className,
+  unconfirmedLabel,
+  ...rest
+} = Astro.props;
+
+const disabled = !href;
+const title = disabled && import.meta.env.DEV ? unconfirmedLabel : undefined;
+---
+
+<a
+  href={disabled ? undefined : href}
+  role={disabled ? 'link' : undefined}
+  aria-disabled={disabled ? 'true' : undefined}
+  title={title}
+  class:list={['btn', `btn--${variant}`, { 'btn--block': block, 'btn--on-dark': onDark }, className]}
+  {...rest}
+>
+  <slot />
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--touch);
+    min-width: var(--touch);
+    padding: 0.75rem 1.25rem;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    font-weight: 800;
+    font-size: var(--text-base);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--duration) var(--ease),
+      color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease);
+  }
+
+  .btn--block {
+    display: flex;
+    width: 100%;
+  }
+
+  @media (min-width: 48em) {
+    .btn--block {
+      display: inline-flex;
+      width: auto;
+    }
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+  .btn--primary:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .btn--secondary {
+    border-color: currentColor;
+    color: var(--color-primary);
+  }
+  .btn--secondary:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .btn--secondary.btn--on-dark {
+    color: var(--color-on-primary);
+  }
+  .btn--secondary.btn--on-dark:hover {
+    background: var(--color-on-primary);
+    border-color: var(--color-on-primary);
+    color: var(--color-primary);
+  }
+
+  .btn--ghost {
+    padding-inline: 0.5rem;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .btn[aria-disabled='true'] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+</style>

@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../../config/site';
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const p = t(locale).home.partners;
+
+// Logos live in src/assets/partners/. site.partners[].logo is the file name.
+const logos = import.meta.glob<{ default: ImageMetadata }>('/src/assets/partners/*', { eager: true });
+const partners = site.partners
+  .filter((x) => x.approved)
+  .map((x) => ({
+    ...x,
+    img: x.logo ? logos[`/src/assets/partners/${x.logo}`]?.default : undefined,
+  }));
+---
+
+<section class="section partners" aria-labelledby="partners-title">
+  <div class="container partners__inner">
+    <h2 id="partners-title" class="section-title">{p.title}</h2>
+    {
+      partners.length === 0 ? (
+        <p class="lede partners__empty">{p.empty}</p>
+      ) : (
+        <ul role="list" class="partners__grid">
+          {partners.map((x) => {
+            const inner = x.img ? (
+              <Image src={x.img} alt={x.name} height={64} loading="lazy" class="partners__logo" />
+            ) : (
+              <span class="partners__name">{x.name}</span>
+            );
+            return (
+              <li>
+                {x.url ? (
+                  <a href={x.url} rel="noopener" target="_blank" data-analytics="partner_click">{inner}</a>
+                ) : (
+                  inner
+                )}
+                {x.description && <p>{x.description[locale]}</p>}
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .partners {
+    background: var(--color-alt);
+  }
+  .partners__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .partners__empty {
+    color: var(--color-muted);
+  }
+  .partners__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    align-items: center;
+  }
+  .partners__grid a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch);
+  }
+  .partners__name {
+    font-weight: 800;
+    font-size: var(--text-lg);
+  }
+  .partners__logo {
+    height: 4rem;
+    width: auto;
+    object-fit: contain;
+  }
+  @media (min-width: 48em) {
+    .partners__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

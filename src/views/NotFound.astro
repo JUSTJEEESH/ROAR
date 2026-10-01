@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import { localizedPath, t } from '../i18n/utils';
+
+const en = t('en');
+const es = t('es');
+---
+
+<!-- Static hosts serve one 404 for every path, so this page is bilingual. -->
+<Base title={en.pages.meta.notFound.title} description={en.pages.meta.notFound.description} locale="en" noindex langPath="/">
+  <section class="section">
+    <div class="container nf">
+      <div class="lang">
+        <h1>{en.pages.notFound.title}</h1>
+        <p class="lede">{en.pages.notFound.text}</p>
+        <Button href={localizedPath('en', '/')}>{en.pages.cta.home}</Button>
+      </div>
+      <div class="lang" lang="es">
+        <p class="h">{es.pages.notFound.title}</p>
+        <p class="lede">{es.pages.notFound.text}</p>
+        <Button href={localizedPath('es', '/')} variant="secondary">{es.pages.cta.home}</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    gap: var(--space-12);
+  }
+  .lang {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+  h1,
+  .h {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--color-primary);
+  }
+  @media (min-width: 48em) {
+    .nf {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

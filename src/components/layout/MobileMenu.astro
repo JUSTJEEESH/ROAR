@@ -1,0 +1,99 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+import LangSwitch from './LangSwitch.astro';
+import Logo from './Logo.astro';
+import { navItems } from './navItems';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+const { locale, pathname } = Astro.props;
+const c = t(locale);
+const items = navItems(locale);
+---
+
+<div id="mobile-menu" class="menu" role="dialog" aria-modal="true" aria-label={c.a11y.menuLabel} hidden>
+  <div class="menu__bar container">
+    <Logo locale={locale} />
+    <button type="button" class="menu__close" data-menu-close>
+      <span class="visually-hidden">{c.a11y.closeMenu}</span>
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+        <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" fill="none"></path>
+      </svg>
+    </button>
+  </div>
+  <nav class="menu__nav container" aria-label={c.a11y.mainNav}>
+    <ul role="list">
+      {items.map((item) => (
+        <li><a href={item.href} data-menu-link>{item.label}</a></li>
+      ))}
+      <li><a href={localizedPath(locale, '/donate')} data-menu-link>{c.nav.donate}</a></li>
+    </ul>
+    <div class="menu__actions">
+      <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+        {c.cta.founding}
+      </Button>
+      <LangSwitch locale={locale} pathname={pathname} />
+    </div>
+  </nav>
+</div>
+
+<style>
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: var(--color-background);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .menu[hidden] {
+    display: none;
+  }
+  .menu__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+  }
+  .menu__close {
+    display: grid;
+    place-items: center;
+    width: var(--touch);
+    height: var(--touch);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .menu__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding-block: var(--space-6) var(--space-8);
+  }
+  .menu__nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu__nav li a {
+    display: flex;
+    align-items: center;
+    min-height: 3.5rem;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .menu__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+</style>

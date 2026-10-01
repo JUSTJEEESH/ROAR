@@ -1,0 +1,177 @@
+---
+import Base from '../layouts/Base.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Photo from '../components/ui/Photo.astro';
+import { site } from '../config/site';
+import { formatMoney, teamLines } from '../i18n/faq';
+import { localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const u = c.pages.unit;
+const meta = c.pages.meta.unit;
+const camp = site.campaign;
+const budget =
+  camp.totalProjectCost === null
+    ? null
+    : camp.totalProjectCostMax !== null
+      ? `${formatMoney(camp.totalProjectCost)} – ${formatMoney(camp.totalProjectCostMax)}`
+      : formatMoney(camp.totalProjectCost);
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <PageHero title={u.title} subtitle={u.subtitle} />
+
+  <div class="container">
+    <div class="hero-photo">
+      <Photo name="unit" locale={locale} placeholder={u.photoLabel} priority sizes="(min-width: 76em) 1216px, 100vw" />
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="island-title">
+    <div class="container two">
+      <h2 id="island-title" class="section-title">{u.island.title}</h2>
+      <ul role="list" class="rows">
+        {u.island.items.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="field-title">
+    <div class="container two">
+      <div class="stack">
+        <h2 id="field-title" class="section-title">{u.field.title}</h2>
+        <p class="lede">{u.field.intro}</p>
+      </div>
+      <ul role="list" class="rows">
+        {u.field.items.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section on-dark" aria-labelledby="off-title">
+    <div class="container narrow stack">
+      <h2 id="off-title" class="section-title">{u.offGrid.title}</h2>
+      <p class="big">{u.offGrid.body}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="team-title">
+    <div class="container two">
+      <div class="stack">
+        <h2 id="team-title" class="section-title">{u.team.title}</h2>
+        <p class="lede">{u.team.intro}</p>
+      </div>
+      <div class="stack">
+        <ul role="list" class="rows">
+          {teamLines(locale).map((l) => <li>{l}</li>)}
+        </ul>
+        <p class="muted">{u.team.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="data-title">
+    <div class="container narrow stack">
+      <h2 id="data-title" class="section-title">{u.data.title}</h2>
+      <p class="lede">{u.data.body}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="budget-title">
+    <div class="container two">
+      <h2 id="budget-title" class="section-title">{u.budget.title}</h2>
+      <div class="stack">
+        {
+          budget !== null ? (
+            <>
+              <p class="eyebrow">{u.budget.total}</p>
+              <p class="figure">{budget}</p>
+              {camp.showBudgetDisclaimer && <p class="muted">{u.budget.disclaimer}</p>}
+            </>
+          ) : (
+            <p class="pending">{u.budget.unconfirmed}</p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.unit.title}
+    text={c.pages.next.unit.text}
+    actions={[
+      { href: localizedPath(locale, '/become-a-member'), label: c.cta.founding, analytics: 'membership_cta_click' },
+      { href: localizedPath(locale, '/donate'), label: c.cta.donate, variant: 'secondary', analytics: 'donation_cta_click' },
+    ]}
+  />
+</Base>
+
+<style>
+  .hero-photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .narrow {
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .alt {
+    background: var(--color-alt);
+  }
+  .big {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .rows {
+    border-top: 3px solid var(--color-primary);
+  }
+  .rows li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-line);
+    font-weight: 700;
+    font-size: var(--text-lg);
+  }
+  .figure {
+    font-size: var(--text-hero);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-primary);
+  }
+  .muted {
+    color: var(--color-muted);
+  }
+  .pending {
+    padding: var(--space-4);
+    border: 2px dashed var(--color-line);
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+  @media (min-width: 48em) {
+    .hero-photo {
+      aspect-ratio: 16 / 7;
+    }
+  }
+  @media (min-width: 64em) {
+    .two {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: var(--space-16);
+      align-items: start;
+    }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const f = c.home.finalCta;
+---
+
+<section class="section final" aria-labelledby="final-title" data-hides-sticky>
+  <div class="container final__inner">
+    <h2 id="final-title" class="final__title">{f.title}</h2>
+    <p class="final__lines">
+      {f.lines.map((l) => <span>{l}</span>)}
+    </p>
+    <div class="final__actions">
+      <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+        {c.cta.founding}
+      </Button>
+      <Button href={localizedPath(locale, '/donate')} variant="secondary" block data-analytics="donation_cta_click">
+        {c.cta.donate}
+      </Button>
+      <Button href={localizedPath(locale, '/contact')} variant="ghost">{c.cta.contactRoar}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-line);
+  }
+  .final__inner {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .final__title {
+    font-size: var(--text-hero);
+    color: var(--color-primary);
+    max-width: 14ch;
+  }
+  .final__lines {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .final__lines span {
+    display: block;
+  }
+  .final__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+  @media (min-width: 48em) {
+    .final__actions {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+</style>

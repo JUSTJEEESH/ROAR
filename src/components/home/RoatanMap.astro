@@ -1,0 +1,96 @@
+---
+import { t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale).home.idea;
+
+/* Stylized, illustrative outline: Roatán is a long, narrow island running
+   west to east. Not a survey-accurate map, and labeled as such. */
+const island =
+  'M14 128 C30 108 52 112 74 100 C98 88 118 92 146 80 C176 68 204 78 236 66 C268 54 296 60 330 48 C364 38 394 46 426 36 C458 28 486 34 520 30 C548 28 574 40 590 56 C598 66 588 80 570 84 C548 90 530 84 506 92 C478 102 452 96 424 106 C392 116 366 110 334 120 C300 130 272 124 238 134 C204 144 176 138 144 148 C112 158 84 150 58 152 C34 154 10 146 14 128 Z';
+const sectors = [0, 1, 2, 3, 4].map((i) => ({ n: i + 1, x: 10 + i * 116, w: 116 }));
+---
+
+<figure class="map">
+  <svg viewBox="0 20 600 176" role="img" aria-labelledby="map-desc">
+    <desc id="map-desc">{c.mapDescription}</desc>
+    <defs>
+      <clipPath id="island-clip"><path d={island}></path></clipPath>
+    </defs>
+    <path d={island} class="island"></path>
+    <g class="sectors" clip-path="url(#island-clip)">
+      {sectors.map((s) => (
+        <rect class="sector" x={s.x} y="0" width={s.w} height="180" style={`--i:${s.n - 1}`}></rect>
+      ))}
+    </g>
+    {sectors.slice(1).map((s) => (
+      <line class="divider" x1={s.x} y1="20" x2={s.x} y2="170"></line>
+    ))}
+    <path d={island} class="outline"></path>
+    {sectors.map((s) => (
+      <text class="label" x={s.x + s.w / 2} y="190" text-anchor="middle" aria-hidden="true">{s.n}</text>
+    ))}
+  </svg>
+  <figcaption>{c.mapNote}</figcaption>
+</figure>
+
+<style>
+  .map {
+    display: grid;
+    gap: var(--space-2);
+  }
+  svg {
+    width: 100%;
+    overflow: visible;
+  }
+  .island {
+    fill: rgba(255, 250, 241, 0.12);
+  }
+  /* Static (reduced-motion) state: sector 1 marked, so the order still reads */
+  .sector {
+    fill: var(--color-accent-on-dark);
+    opacity: 0;
+  }
+  .sectors .sector:first-child {
+    opacity: 0.85;
+  }
+  .divider {
+    stroke: var(--color-primary);
+    stroke-width: 2;
+    stroke-dasharray: 4 4;
+  }
+  .outline {
+    fill: none;
+    stroke: var(--color-on-primary);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+  .label {
+    fill: var(--color-on-primary);
+    font-size: 24px;
+    font-weight: 800;
+  }
+  figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-on-primary-muted);
+  }
+
+  /* Sectors fill in one after another. The static state above is the reduced-motion version. */
+  @media (prefers-reduced-motion: no-preference) {
+    .sector {
+      opacity: 0;
+      animation: cover 12s var(--ease) infinite;
+      animation-delay: calc(var(--i) * 1.6s);
+    }
+    @keyframes cover {
+      0% { opacity: 0; }
+      10% { opacity: 0.85; }
+      82% { opacity: 0.85; }
+      100% { opacity: 0; }
+    }
+  }
+</style>

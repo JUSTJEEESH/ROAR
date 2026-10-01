@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import FaqList from '../components/ui/FaqList.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import { resolveFaq } from '../i18n/faq';
+import { localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const f = c.pages.faq;
+const meta = c.pages.meta.faq;
+
+const groups = f.groups.map((g) => ({ ...g, items: resolveFaq(locale, g.ids) })).filter((g) => g.items.length > 0);
+// FAQPage structured data only for answers that are visible on the page. Unconfirmed items are excluded.
+const visible = groups.flatMap((g) => g.items).filter((i) => !i.pending);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: visible.map((i) => ({
+    '@type': 'Question',
+    name: i.q,
+    acceptedAnswer: { '@type': 'Answer', text: i.a },
+  })),
+};
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <JsonLd slot="head" data={jsonLd} />
+  <PageHero title={f.title} subtitle={f.subtitle} />
+
+  <section class="section faqs">
+    <div class="container groups">
+      {
+        groups.map((g, i) => (
+          <div class="group" aria-labelledby={`g-${i}`}>
+            <h2 id={`g-${i}`}>{g.title}</h2>
+            <FaqList locale={locale} ids={g.ids} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.faq.title}
+    text={c.pages.next.faq.text}
+    actions={[
+      { href: localizedPath(locale, '/contact'), label: c.cta.contactRoar },
+      { href: localizedPath(locale, '/become-a-member'), label: c.cta.founding, variant: 'secondary', analytics: 'membership_cta_click' },
+    ]}
+  />
+</Base>
+
+<style>
+  .faqs {
+    padding-top: 0;
+  }
+  .groups {
+    display: grid;
+    gap: var(--space-12);
+    max-width: 52rem;
+  }
+  .group {
+    display: grid;
+    gap: var(--space-4);
+  }
+  h2 {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+  }
+</style>

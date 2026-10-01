@@ -1,0 +1,204 @@
+---
+import { site } from '../../config/site';
+import { fmt, localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const f = c.home.founding;
+const fm = site.foundingMembers;
+
+const money = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: fm.currency,
+  maximumFractionDigits: 0,
+});
+const vars = { goal: fm.goal, months: fm.monthlyTermMonths };
+const count = fm.currentCount;
+const pct = count === null ? null : Math.min(100, Math.round((count / fm.goal) * 100));
+---
+
+<section id="founding-250" class="section on-dark" aria-labelledby="founding-title" data-hides-sticky>
+  <div class="container founding">
+    <div class="founding__head">
+      <h2 id="founding-title" class="founding__title">
+        <span>{fmt(f.title[0], vars)}</span>
+        <span>{f.title[1]}</span>
+        <span>{f.title[2]}</span>
+      </h2>
+      <p class="founding__sub">{fmt(f.subtitle, vars)}</p>
+      <div class="stack founding__body">
+        <p>{f.body[0]}</p>
+        <p>{fmt(f.body[1], vars)}</p>
+      </div>
+    </div>
+
+    <div class="founding__offer">
+      <p class="founding__big" aria-hidden="true">{fm.goal}</p>
+
+      <div class="prices">
+        <p class="price">
+          <span class="price__amt">{money.format(fm.monthlyPrice)}</span>
+          <span class="price__unit">{f.perMonth}</span>
+          <span class="price__note">{fmt(f.forMonths, vars)}</span>
+        </p>
+        <p class="prices__or">{f.or}</p>
+        <p class="price">
+          <span class="price__amt">{money.format(fm.annualPrice)}</span>
+          <span class="price__unit">{f.perYear}</span>
+        </p>
+      </div>
+
+      {
+        count === null ? (
+          <p class="goal">{fm.goal} {f.goalLabel}</p>
+        ) : (
+          <div class="progress">
+            <p class="goal">{fmt(f.count, { count, goal: fm.goal })}</p>
+            <div
+              class="bar"
+              role="progressbar"
+              aria-label={f.progressLabel}
+              aria-valuemin="0"
+              aria-valuemax={fm.goal}
+              aria-valuenow={count}
+            >
+              <div class="bar__fill" style={`width:${pct}%`}></div>
+            </div>
+          </div>
+        )
+      }
+
+      <div class="benefits">
+        <p class="eyebrow">{f.benefitsHeading}</p>
+        <ul role="list">
+          {fm.benefits.map((k) => <li>{c.benefits[k]}</li>)}
+        </ul>
+      </div>
+
+      <div class="founding__actions">
+        <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+          {c.cta.founding}
+        </Button>
+        <Button href={localizedPath(locale, '/donate')} variant="secondary" onDark block data-analytics="donation_cta_click">
+          {c.cta.oneTimeDonation}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .founding {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+  .founding__title span {
+    display: block;
+    font-size: var(--text-hero);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .founding__title span:nth-child(3) {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-3);
+    color: var(--color-accent-on-dark);
+  }
+  .founding__sub {
+    margin-top: var(--space-6);
+    font-size: var(--text-xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .founding__body {
+    margin-top: var(--space-4);
+    max-width: var(--measure);
+  }
+  .founding__offer {
+    display: grid;
+    gap: var(--space-6);
+    align-content: start;
+  }
+  .founding__big {
+    font-size: clamp(6rem, 4rem + 14vw, 14rem);
+    font-weight: 800;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: var(--color-accent-on-dark);
+  }
+  .prices {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--space-2);
+  }
+  .price__amt {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .price__unit {
+    font-size: var(--text-lg);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .price__note {
+    flex-basis: 100%;
+    color: var(--color-on-primary-muted);
+  }
+  .prices__or {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: var(--text-sm);
+    color: var(--color-on-primary-muted);
+  }
+  .goal {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .bar {
+    height: 0.75rem;
+    margin-top: var(--space-2);
+    background: rgba(255, 250, 241, 0.2);
+  }
+  .bar__fill {
+    height: 100%;
+    background: var(--color-accent-on-dark);
+  }
+  .benefits ul {
+    margin-top: var(--space-2);
+  }
+  .benefits li {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid rgba(255, 250, 241, 0.25);
+    font-weight: 700;
+  }
+  .founding__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  @media (min-width: 64em) {
+    .founding {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      column-gap: var(--space-16);
+      align-items: start;
+    }
+    .founding__actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>

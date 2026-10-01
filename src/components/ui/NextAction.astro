@@ -1,0 +1,62 @@
+---
+import type { Locale } from '../../i18n/types';
+import Button from './Button.astro';
+
+interface Action {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'secondary';
+  analytics?: string;
+}
+interface Props {
+  locale: Locale;
+  title: string;
+  text: string;
+  actions: Action[];
+}
+const { title, text, actions } = Astro.props;
+---
+
+<!-- Every page ends with a clear next action. -->
+<section class="section next" aria-labelledby="next-title" data-hides-sticky>
+  <div class="container next__inner">
+    <h2 id="next-title">{title}</h2>
+    <p class="lede">{text}</p>
+    <div class="next__actions">
+      {
+        actions.map((a) => (
+          <Button href={a.href} variant={a.variant ?? 'primary'} block data-analytics={a.analytics}>
+            {a.label}
+          </Button>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .next {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-line);
+  }
+  .next__inner {
+    display: grid;
+    gap: var(--space-4);
+  }
+  h2 {
+    font-size: var(--text-2xl);
+    color: var(--color-primary);
+    max-width: 18ch;
+  }
+  .next__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  @media (min-width: 48em) {
+    .next__actions {
+      flex-direction: row;
+    }
+  }
+</style>

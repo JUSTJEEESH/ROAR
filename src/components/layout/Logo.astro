@@ -1,0 +1,39 @@
+---
+import { localizedPath } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<!-- Text wordmark until real logo files arrive (OPEN_QUESTIONS F1) -->
+<a href={localizedPath(locale, '/')} class="logo" aria-label="ROAR Mobile">
+  <span class="logo__roar">ROAR</span>
+  <span class="logo__mobile">Mobile</span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: var(--touch);
+    line-height: 1;
+    text-decoration: none;
+    color: var(--color-primary);
+  }
+  .logo__roar {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .logo__mobile {
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+</style>

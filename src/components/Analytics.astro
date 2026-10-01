@@ -1,0 +1,34 @@
+---
+import { site } from '../config/site';
+const a = site.analytics;
+---
+
+{/* Off unless site.analytics.enabled. Plausible only for now: no cookies, no personal data.
+    The tracker is the one external script; the click/toggle/submit wiring below is bundled, not inline,
+    so public/_headers can keep a strict script-src. */}
+{a.enabled && a.provider === 'plausible' && (
+  <>
+    <script is:inline defer data-domain={a.domain} src="https://plausible.io/js/script.js"></script>
+    <script>
+      type Plausible = (event: string) => void;
+      const send = (name: string | undefined) => {
+        const plausible = (window as unknown as { plausible?: Plausible }).plausible;
+        if (name && plausible) plausible(name);
+      };
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest<HTMLElement>('[data-analytics]');
+        // faq_open is sent on toggle, not on click, so it fires once per open
+        if (el && el.dataset.analytics !== 'faq_open') send(el.dataset.analytics);
+      });
+      document.addEventListener(
+        'toggle',
+        (e) => {
+          const el = e.target as HTMLDetailsElement;
+          if (el.open && el.dataset.analytics === 'faq_open') send('faq_open');
+        },
+        true,
+      );
+      document.addEventListener('submit', (e) => send((e.target as HTMLElement).dataset.analytics));
+    </script>
+  </>
+)}

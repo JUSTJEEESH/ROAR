@@ -1,0 +1,66 @@
+---
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+import Photo from '../ui/Photo.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const u = c.home.unit;
+---
+
+<section id="mobile-unit" class="section unit" aria-labelledby="unit-title">
+  <div class="container unit__inner">
+    <div class="unit__head">
+      <h2 id="unit-title" class="section-title">{u.titleA}</h2>
+      <p class="unit__sub">{u.titleB}</p>
+      <p class="lede">{u.body}</p>
+    </div>
+    <div class="unit__photo">
+      <Photo name="unit" locale={locale} placeholder={u.photoLabel} sizes="(min-width: 76em) 1216px, 100vw" />
+    </div>
+    <ul role="list" class="cols cols--4">
+      {u.features.map((f) => (
+        <li>
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </li>
+      ))}
+    </ul>
+    <div>
+      <Button href={localizedPath(locale, '/the-mobile-unit')} block>{c.cta.seeMobileUnit}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .unit {
+    background: var(--color-alt);
+  }
+  .unit__inner {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .unit__head {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .unit__sub {
+    font-size: var(--text-xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .unit__photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  @media (min-width: 48em) {
+    .unit__photo {
+      aspect-ratio: 16 / 7;
+    }
+  }
+</style>

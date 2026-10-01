@@ -1,0 +1,144 @@
+---
+import { site } from '../../config/site';
+import { localizedPath, t } from '../../i18n/utils';
+import type { Locale } from '../../i18n/types';
+import Button from '../ui/Button.astro';
+import Logo from './Logo.astro';
+import { navItems } from './navItems';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = t(locale);
+const nav = [
+  ...navItems(locale),
+  { href: localizedPath(locale, '/donate'), label: c.nav.donate },
+  { href: localizedPath(locale, '/contact'), label: c.nav.contact },
+];
+const social = [
+  { href: site.links.facebook, label: c.footer.facebook },
+  { href: site.links.instagram, label: c.footer.instagram },
+].filter((s) => s.href);
+const legalLines = [site.legal.us501c3Wording, site.legal.honduranNgoWording].filter(
+  (l): l is string => Boolean(l),
+);
+---
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <Logo locale={locale} />
+      <p>{c.footer.description}</p>
+      <div data-hides-sticky>
+        <Button href={localizedPath(locale, '/become-a-member')} block data-analytics="membership_cta_click">
+          {c.cta.founding}
+        </Button>
+      </div>
+    </div>
+
+    <nav aria-label={c.a11y.footerNav}>
+      <h2 class="eyebrow">{c.footer.navHeading}</h2>
+      <ul role="list">
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="eyebrow">{c.footer.contactHeading}</h2>
+      <ul role="list">
+        <li>{site.contact.location}</li>
+        <li><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></li>
+      </ul>
+      {social.length > 0 && (
+        <>
+          <h2 class="eyebrow footer__sub">{c.footer.socialHeading}</h2>
+          <ul role="list">
+            {social.map((s) => (
+              <li><a href={s.href} rel="noopener" target="_blank">{s.label}</a></li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+
+    <div class="footer__legal">
+      <h2 class="eyebrow">{c.footer.legalHeading}</h2>
+      <p>{c.footer.parentOrg}</p>
+      {legalLines.map((l) => <p>{l}</p>)}
+      <ul role="list" class="footer__legal-links">
+        <li><a href={localizedPath(locale, '/privacy')}>{c.footer.privacy}</a></li>
+        <li><a href={localizedPath(locale, '/terms')}>{c.footer.terms}</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding-block: var(--space-12);
+  }
+  .footer :global(.logo),
+  .footer :global(.logo__mobile) {
+    color: var(--color-on-primary);
+  }
+  .footer .eyebrow {
+    color: var(--color-on-primary);
+    opacity: 0.8;
+    margin-bottom: var(--space-3);
+  }
+  .footer__sub {
+    margin-top: var(--space-6);
+  }
+  .footer__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+  .footer__brand > div {
+    width: 100%;
+  }
+  .footer__brand p {
+    max-width: 32ch;
+  }
+  .footer li {
+    display: block;
+  }
+  .footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch);
+  }
+  .footer__brand :global(.btn--primary) {
+    background: var(--color-background);
+    color: var(--color-primary);
+  }
+  .footer__legal p {
+    font-size: var(--text-sm);
+    max-width: 40ch;
+    margin-bottom: var(--space-3);
+  }
+  .footer__legal-links {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 48em) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64em) {
+    .footer__grid {
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: var(--space-12);
+    }
+  }
+</style>

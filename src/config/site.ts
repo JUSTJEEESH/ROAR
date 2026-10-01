@@ -15,14 +15,22 @@ export interface Partner {
   name: string;
   /** Path under src/assets/partners/, or null if no logo supplied */
   logo: string | null;
-  description?: string;
+  description?: { en: string; es: string };
   url?: string;
   /** Only render when the partner has approved use of their name/logo */
   approved: boolean;
 }
 
+export interface PhotoSpec {
+  /** File name inside src/assets/photos/ */
+  file: string;
+  /** Describes what is actually in the photo, in both languages */
+  alt: { en: string; es: string };
+}
+
 export interface Milestone {
-  label: string;
+  /** Bilingual label so the CEO can edit both languages in one place */
+  label: { en: string; es: string };
   status: Status;
   /** ISO date or free text like "Q1 2027". Optional. */
   date?: string;
@@ -61,6 +69,12 @@ export const site = {
     showBudgetDisclaimer: true,
   },
 
+  strategy: {
+    /** "Around 70% sterilization coverage within a defined area", from current ROAR material.
+     *  Not yet confirmed with the CEO or a cited source (OPEN_QUESTIONS J1). null hides the claim. */
+    coverageTargetPercent: 70 as number | null,
+  },
+
   links: {
     /** Zeffy membership page. Empty string = unconfirmed; render CTA as aria-disabled in dev. */
     membership: '',
@@ -75,6 +89,9 @@ export const site = {
   contact: {
     email: 'info@roarmobile.org',
     location: 'Roatán, Honduras',
+    /** Used for structured data only */
+    addressLocality: 'Roatán',
+    countryCode: 'HN',
     /** Formspree form ID, e.g. 'xyzabcde'. Empty = form renders but posts nowhere; flag in dev banner. */
     formspreeId: '',
   },
@@ -99,6 +116,12 @@ export const site = {
     { name: 'Worldwide Veterinary Service', logo: null, url: '', approved: false },
     { name: 'Mission Rabies', logo: null, url: '', approved: false },
   ] as Partner[],
+
+  /** Real photography. null = a labeled placeholder block renders instead (CLAUDE.md rule 5). */
+  photos: {
+    hero: null as PhotoSpec | null,
+    unit: null as PhotoSpec | null,
+  },
 
   milestones: [] as Milestone[],
 
@@ -135,6 +158,9 @@ export function unconfirmedFields(): string[] {
   if (c.totalProjectCost === null) out.push('campaign.totalProjectCost');
   if (c.fundsRestrictedToBuild === null) out.push('campaign.fundsRestrictedToBuild');
   if (site.foundingMembers.currentCount === null) out.push('foundingMembers.currentCount (optional)');
+  if (site.strategy.coverageTargetPercent !== null) out.push('strategy.coverageTargetPercent (confirm figure + source)');
+  if (site.photos.hero === null) out.push('photos.hero (placeholder showing)');
+  if (site.photos.unit === null) out.push('photos.unit (placeholder showing)');
   if (!site.links.membership) out.push('links.membership');
   if (!site.links.donation) out.push('links.donation');
   if (!site.links.equipmentRegistry) out.push('links.equipmentRegistry (or confirm inactive)');

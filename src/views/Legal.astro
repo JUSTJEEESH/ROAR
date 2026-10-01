@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import NextAction from '../components/ui/NextAction.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import { copyVars } from '../i18n/faq';
+import { fmt, localizedPath, t } from '../i18n/utils';
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+  kind: 'privacy' | 'terms';
+}
+const { locale, kind } = Astro.props;
+const c = t(locale);
+const doc = c.pages.legal[kind];
+const meta = c.pages.meta[kind];
+const vars = copyVars(locale);
+---
+
+<Base title={meta.title} description={meta.description} locale={locale}>
+  <PageHero title={doc.title} />
+
+  <section class="section body">
+    <div class="container doc">
+      {
+        doc.sections.map((s) => (
+          <div class="sec">
+            <h2>{s.title}</h2>
+            {s.body.map((p) => <p>{fmt(p, vars)}</p>)}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <NextAction
+    locale={locale}
+    title={c.pages.next.legal.title}
+    text={c.pages.next.legal.text}
+    actions={[{ href: localizedPath(locale, '/'), label: c.pages.cta.home }]}
+  />
+</Base>
+
+<style>
+  .body {
+    padding-top: 0;
+  }
+  .doc {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 48rem;
+  }
+  .sec {
+    display: grid;
+    gap: var(--space-2);
+  }
+  h2 {
+    font-size: var(--text-xl);
+    color: var(--color-primary);
+  }
+</style>
